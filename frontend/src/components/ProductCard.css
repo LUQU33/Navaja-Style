@@ -1,0 +1,127 @@
+.navaja-card {
+  --bg-panel: #1b1b1a;
+  --steel-100: #f2f2ef;
+  --steel-300: #cdd1d6;
+  --steel-500: #8a8f98;
+  --steel-700: #33363b;
+  --ember: #a8402f;
+  --ember-bright: #c65a44;
+
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-panel);
+  border: 1px solid rgba(138, 143, 152, 0.14);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.navaja-card:hover {
+  border-color: rgba(138, 143, 152, 0.4);
+  transform: translateY(-3px);
+}
+.navaja-card * { box-sizing: border-box; }
+
+.navaja-card .media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(155deg, #202020 0%, #131313 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.navaja-card .media svg {
+  width: 46%;
+  opacity: 0.5;
+  transition: opacity 0.25s ease, transform 0.4s ease;
+}
+.navaja-card:hover .media svg {
+  opacity: 0.75;
+  transform: scale(1.04) rotate(-2deg);
+}
+
+.navaja-card .badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--steel-100);
+  background: var(--ember);
+  padding: 4px 8px;
+}
+
+.navaja-card .quick-add {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bg-panel);
+  background: var(--steel-100);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+.navaja-card:hover .quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+.navaja-card .quick-add:hover {
+  background: var(--ember-bright);
+  color: var(--steel-100);
+}
+
+.navaja-card .info {
+  padding: 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.navaja-card .category {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+}
+
+.navaja-card .name {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--steel-100);
+  margin: 0;
+}
+
+.navaja-card .row-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.navaja-card .price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--steel-300);
+}
+
+.navaja-card .swatches {
+  display: flex;
+  gap: 5px;
+}
+.navaja-card .swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 242, 239, 0.35);
+}
