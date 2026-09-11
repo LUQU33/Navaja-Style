@@ -1,0 +1,10 @@
+/* Estilos a nivel de la app completa.
+   Los estilos de cada sección (Hero, Navbar, Footer, etc.)
+   viven en su propio archivo .css junto al componente. */
+
+#root {
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  text-align: left;
+}
