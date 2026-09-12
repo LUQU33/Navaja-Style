@@ -30,6 +30,51 @@ function generarToken(usuario) {
   return payloadCodificado + "." + firma;
 }
 
+function verificarToken(token) {
+  const partes = token.split(".");
+
+  if (partes.length !== 2) {
+    return null;
+  }
+
+  const payloadCodificado = partes[0];
+  const firmaRecibida = partes[1];
+
+  const firmaEsperada = crearFirma(payloadCodificado);
+
+  const firmaRecibidaBuffer = Buffer.from(firmaRecibida);
+  const firmaEsperadaBuffer = Buffer.from(firmaEsperada);
+
+  if (firmaRecibidaBuffer.length !== firmaEsperadaBuffer.length) {
+    return null;
+  }
+
+  const firmaValida = crypto.timingSafeEqual(
+    firmaRecibidaBuffer,
+    firmaEsperadaBuffer
+  );
+
+  if (!firmaValida) {
+    return null;
+  }
+
+  const payloadTexto = Buffer.from(
+    payloadCodificado,
+    "base64url"
+  ).toString("utf8");
+
+  const payload = JSON.parse(payloadTexto);
+
+  const ahora = Math.floor(Date.now() / 1000);
+
+  if (payload.exp < ahora) {
+    return null;
+  }
+
+  return payload;
+}
+
 module.exports = {
   generarToken,
+  verificarToken,
 };
