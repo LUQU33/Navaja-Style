@@ -24,12 +24,7 @@ mysql -u root -p < sql/schema.sql
 
 Esto crea la base `NavajaStyle` con todas sus tablas (el script ya incluye `CREATE DATABASE`).
 
-> Nota: la tabla `productos` requiere que exista al menos una categoría en `categorias` para poder crear productos (por la foreign key `categoria_id`). Podés insertar una a mano:
->
-> ```sql
-> USE NavajaStyle;
-> INSERT INTO categorias (nombre) VALUES ('Remeras');
-> ```
+> Nota: la tabla `productos` requiere que exista al menos una categoría en `categorias` para poder crear productos (por la foreign key `categoria_id`). Podés insertarla a mano con SQL, o crearla desde la API con el endpoint `POST /api/categorias` (ver más abajo).
 
 ## 3. Configurar variables de entorno
 
@@ -61,7 +56,53 @@ El servidor queda escuchando en `http://localhost:3000`. Todas las rutas de la A
 
 Para cada request: elegir el método, poner la URL, y si hay body, en la pestaña **Body** elegir **raw** + **JSON**.
 
-### Crear un producto
+### Categorías
+
+#### Crear una categoría
+
+- Método: `POST`
+- URL: `http://localhost:3000/api/categorias`
+- Body:
+
+```json
+{ "nombre": "Remeras" }
+```
+
+#### Listar todas las categorías
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/categorias`
+- Sin body.
+
+#### Obtener una categoría por id
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/categorias/1`
+- Sin body.
+
+#### Actualizar una categoría
+
+- Método: `PUT`
+- URL: `http://localhost:3000/api/categorias/1`
+- Body:
+
+```json
+{ "nombre": "Camperas" }
+```
+
+#### Eliminar una categoría
+
+- Método: `DELETE`
+- URL: `http://localhost:3000/api/categorias`
+- Body:
+
+```json
+{ "id": 1 }
+```
+
+### Productos
+
+#### Crear un producto
 
 - Método: `POST`
 - URL: `http://localhost:3000/api/productos`
@@ -76,19 +117,19 @@ Para cada request: elegir el método, poner la URL, y si hay body, en la pestañ
 }
 ```
 
-### Listar todos los productos
+#### Listar todos los productos
 
 - Método: `GET`
 - URL: `http://localhost:3000/api/productos`
 - Sin body.
 
-### Obtener un producto por id
+#### Obtener un producto por id
 
 - Método: `GET`
 - URL: `http://localhost:3000/api/productos/1`
 - Sin body.
 
-### Actualizar un producto
+#### Actualizar un producto
 
 - Método: `PUT`
 - URL: `http://localhost:3000/api/productos/1`
@@ -98,7 +139,7 @@ Para cada request: elegir el método, poner la URL, y si hay body, en la pestañ
 { "precio": 18000 }
 ```
 
-### Eliminar un producto
+#### Eliminar un producto
 
 - Método: `DELETE`
 - URL: `http://localhost:3000/api/productos`
