@@ -55,6 +55,13 @@ async function login(req, res, next) {
   }
 }
 
+function me(req, res) {
+  return res.json({
+    usuario: req.usuario,
+  });
+}
+
 module.exports = {
   login,
+  me,
 };
