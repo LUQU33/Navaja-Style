@@ -1,5 +1,6 @@
 const usuarioModel = require("../models/usuario.model");
 const { verificarPassword } = require("../utils/password");
+const { generarToken } = require("../utils/token");
 
 async function login(req, res, next) {
   try {
@@ -12,7 +13,6 @@ async function login(req, res, next) {
     }
 
     const usuario = await usuarioModel.buscarPorEmail(email);
-
 
     if (!usuario) {
       return res.status(401).json({
@@ -31,15 +31,17 @@ async function login(req, res, next) {
       usuario.password_hash
     );
 
-
     if (!passwordCorrecto) {
       return res.status(401).json({
         error: "Email o contraseña incorrectos",
       });
     }
 
+    const token = generarToken(usuario);
+
     return res.json({
       mensaje: "Login correcto",
+      token,
       usuario: {
         id: usuario.id,
         nombre: usuario.nombre,
