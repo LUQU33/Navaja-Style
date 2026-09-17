@@ -51,6 +51,7 @@ CREATE TABLE variantes (
     talle_id INT NOT NULL,
     sku VARCHAR(50),
     stock INT NOT NULL DEFAULT 0,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY uq_variantes_producto_color_talle (producto_id, color_id, talle_id),
     UNIQUE KEY uq_variantes_sku (sku),
     CONSTRAINT check_stock CHECK (stock >= 0),
@@ -90,7 +91,6 @@ CREATE TABLE direcciones (
     referencia TEXT,
     es_principal BOOLEAN NOT NULL DEFAULT FALSE,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_direccion_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
