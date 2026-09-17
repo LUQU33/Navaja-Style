@@ -1,0 +1,84 @@
+.navaja-grid-section {
+  --bg: #131313;
+  --steel-100: #f2f2ef;
+  --steel-500: #8a8f98;
+  --steel-700: #33363b;
+  --ember-bright: #c65a44;
+
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  padding: 88px 32px;
+}
+.navaja-grid-section * { box-sizing: border-box; }
+
+.navaja-grid-section .head {
+  max-width: 1280px;
+  margin: 0 auto 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(138, 143, 152, 0.18);
+  padding-bottom: 24px;
+}
+
+.navaja-grid-section .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ember-bright);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.navaja-grid-section .eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--ember-bright);
+}
+
+.navaja-grid-section h2 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(28px, 3.4vw, 40px);
+  letter-spacing: 0.01em;
+  color: var(--steel-100);
+  margin: 0;
+}
+
+.navaja-grid-section .view-all {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+  text-decoration: none;
+  border-bottom: 1px solid var(--steel-700);
+  padding-bottom: 2px;
+  white-space: nowrap;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.navaja-grid-section .view-all:hover {
+  color: var(--steel-100);
+  border-color: var(--steel-100);
+}
+
+.navaja-grid-section .grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 980px) {
+  .navaja-grid-section .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .navaja-grid-section { padding: 56px 20px; }
+  .navaja-grid-section .grid { grid-template-columns: 1fr; }
+  .navaja-grid-section .head { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
