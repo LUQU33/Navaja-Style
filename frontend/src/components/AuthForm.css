@@ -1,0 +1,192 @@
+.navaja-auth {
+  --bg: #131313;
+  --bg-panel: #1b1b1a;
+  --steel-100: #f2f2ef;
+  --steel-300: #cdd1d6;
+  --steel-500: #8a8f98;
+  --steel-700: #33363b;
+  --ember-bright: #c65a44;
+  --error: #d9503f;
+
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+}
+.navaja-auth * { box-sizing: border-box; }
+
+.navaja-auth .card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--bg-panel);
+  border: 1px solid rgba(138, 143, 152, 0.16);
+  position: relative;
+}
+.navaja-auth .card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ember-bright) 0%, transparent 60%);
+}
+
+.navaja-auth .brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 24px 8px;
+}
+.navaja-auth .brand svg { width: 15px; height: 15px; }
+.navaja-auth .brand-word {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  color: var(--steel-100);
+}
+
+.navaja-auth .tabs {
+  display: flex;
+  margin: 20px 24px 0;
+  border-bottom: 1px solid rgba(138, 143, 152, 0.2);
+}
+.navaja-auth .tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 0 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+  cursor: pointer;
+  position: relative;
+}
+.navaja-auth .tab.active {
+  color: var(--steel-100);
+}
+.navaja-auth .tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--ember-bright);
+}
+
+.navaja-auth form {
+  padding: 28px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.navaja-auth label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+}
+
+.navaja-auth input[type="text"],
+.navaja-auth input[type="email"],
+.navaja-auth input[type="password"] {
+  background: rgba(138, 143, 152, 0.08);
+  border: 1px solid rgba(138, 143, 152, 0.28);
+  color: var(--steel-100);
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  padding: 11px 12px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.navaja-auth input:focus {
+  border-color: var(--ember-bright);
+}
+
+.navaja-auth .row-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -4px;
+}
+.navaja-auth .forgot {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--steel-500);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.navaja-auth .forgot:hover {
+  color: var(--steel-100);
+  border-color: var(--steel-100);
+}
+
+.navaja-auth .terms {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 9px;
+  font-family: 'Inter', sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 12.5px;
+  color: var(--steel-300);
+}
+.navaja-auth .terms input {
+  margin-top: 2px;
+  accent-color: var(--ember-bright);
+}
+
+.navaja-auth .error {
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: var(--error);
+  background: rgba(217, 80, 63, 0.1);
+  border: 1px solid rgba(217, 80, 63, 0.3);
+  padding: 9px 11px;
+}
+
+.navaja-auth .submit {
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--steel-100);
+  border: none;
+  padding: 13px;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.navaja-auth .submit:hover {
+  background: var(--ember-bright);
+  color: var(--steel-100);
+}
+
+.navaja-auth .switch-hint {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--steel-500);
+  margin-top: 2px;
+}
+.navaja-auth .switch-hint button {
+  background: none;
+  border: none;
+  color: var(--steel-100);
+  font-size: 12.5px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
