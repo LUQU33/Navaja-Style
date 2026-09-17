@@ -1,4 +1,4 @@
-const pool = require("../config/db");
+const pool = require("../config/db.config");
 
 async function buscarPorEmail(email) {
   const [rows] = await pool.query(
