@@ -1,0 +1,48 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@gmail.com",
+  "password": "123456"
+}
+
+### Contraseña incorrecta
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@gmail.com",
+  "password": "incorrecta"
+}
+
+### Usuario inexistente
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "noexiste@gmail.com",
+  "password": "123456"
+}
+
+### Campos obligatorios vacíos
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### Sin token
+GET {{url}}/auth/me
+
+### Token invalido
+GET {{url}}/auth/me
+Authorization: Bearer token-falso
+
+### Token valido
+GET {{url}}/auth/me
+Authorization: Bearer eyJpZCI6MSwiZW1haWwiOiJwcnVlYmFAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImV4cCI6MTc4OTI1ODMwNn0.Oz8tchRc-8LieyTmpLuQl5ffBnwz2XPkUWu0kfGVWXQ
