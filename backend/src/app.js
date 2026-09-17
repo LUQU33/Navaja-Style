@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = require("./routes");
-const logger = require("./middlewares/logger");
-const { notFound, errorHandler } = require("./middlewares/errorHandler");
+const logger = require("./middlewares/logger.middleware");
+const { notFound, errorHandler } = require("./middlewares/errorHandler.middleware");
 
 const app = express();
 

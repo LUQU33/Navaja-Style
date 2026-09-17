@@ -1,7 +1,7 @@
 const { crearModeloCRUD } = require("../utils/crud.model");
 
 module.exports = crearModeloCRUD({
-  tabla: "categorias",
-  camposCreables: ["nombre"],
-  camposActualizables: ["nombre"],
+  tabla: "colores",
+  camposCreables: ["nombre", "hex"],
+  camposActualizables: ["nombre", "hex"],
 });

@@ -1,8 +1,8 @@
-const productoModel = require("../models/producto.model");
+const colorModel = require("../models/color.model");
 const { crearControllerCRUD } = require("../utils/crud.controller");
 
 module.exports = crearControllerCRUD({
-  modelo: productoModel,
-  nombreEntidad: "Producto",
+  modelo: colorModel,
+  nombreEntidad: "Color",
   campoNombre: "nombre",
 });
