@@ -1,0 +1,167 @@
+.navaja-footer {
+  --bg: #0f0f0f;
+  --steel-100: #f2f2ef;
+  --steel-300: #cdd1d6;
+  --steel-500: #8a8f98;
+  --ember-bright: #c65a44;
+
+  background: var(--bg);
+  border-top: 1px solid rgba(138, 143, 152, 0.14);
+  font-family: 'Inter', sans-serif;
+  color: var(--steel-300);
+  padding: 64px 32px 0;
+}
+.navaja-footer * { box-sizing: border-box; }
+
+.navaja-footer .top {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr) 1.2fr;
+  gap: 32px;
+  padding-bottom: 48px;
+}
+
+.navaja-footer .brand-block .logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.navaja-footer .brand-block svg { width: 15px; height: 15px; }
+.navaja-footer .brand-word {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  color: var(--steel-100);
+}
+.navaja-footer .tagline {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--steel-500);
+  max-width: 220px;
+  margin: 0 0 20px 0;
+}
+
+.navaja-footer .socials {
+  display: flex;
+  gap: 10px;
+}
+.navaja-footer .socials a {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(138, 143, 152, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--steel-500);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.navaja-footer .socials a:hover {
+  color: var(--steel-100);
+  border-color: var(--steel-100);
+}
+.navaja-footer .socials svg { width: 15px; height: 15px; }
+
+.navaja-footer .col-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--steel-100);
+  margin: 0 0 16px 0;
+}
+.navaja-footer .col-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.navaja-footer .col-links a {
+  font-size: 13.5px;
+  color: var(--steel-500);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.navaja-footer .col-links a:hover {
+  color: var(--steel-100);
+}
+
+.navaja-footer .newsletter .col-title { margin-bottom: 10px; }
+.navaja-footer .newsletter p {
+  font-size: 13px;
+  color: var(--steel-500);
+  margin: 0 0 14px 0;
+  line-height: 1.5;
+}
+.navaja-footer .newsletter form {
+  display: flex;
+  border: 1px solid rgba(138, 143, 152, 0.3);
+}
+.navaja-footer .newsletter input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--steel-100);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 10px 11px;
+  outline: none;
+}
+.navaja-footer .newsletter input::placeholder { color: var(--steel-500); }
+.navaja-footer .newsletter button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--steel-100);
+  color: var(--bg);
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.navaja-footer .newsletter button:hover {
+  background: var(--ember-bright);
+  color: var(--steel-100);
+}
+.navaja-footer .newsletter .sent {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--ember-bright);
+  margin-top: 10px;
+}
+
+.navaja-footer .bottom {
+  max-width: 1280px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(138, 143, 152, 0.14);
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--steel-500);
+}
+
+@media (max-width: 980px) {
+  .navaja-footer .top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .navaja-footer .brand-block, .navaja-footer .newsletter {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 560px) {
+  .navaja-footer { padding: 48px 20px 0; }
+  .navaja-footer .top { grid-template-columns: 1fr; }
+  .navaja-footer .brand-block, .navaja-footer .newsletter { grid-column: span 1; }
+  .navaja-footer .bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+}

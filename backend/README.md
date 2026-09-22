@@ -56,6 +56,15 @@ El servidor queda escuchando en `http://localhost:3000`. Todas las rutas de la A
 
 Para cada request: elegir el método, poner la URL, y si hay body, en la pestaña **Body** elegir **raw** + **JSON**.
 
+Entidades:
+
+- [Categorías](#categorías)
+- [Productos](#productos)
+- [Talles](#talles)
+- [Colores](#colores)
+- [Variantes](#variantes)
+- [Métodos de pago](#métodos-de-pago)
+
 ### Categorías
 
 #### Crear una categoría
@@ -93,12 +102,8 @@ Para cada request: elegir el método, poner la URL, y si hay body, en la pestañ
 #### Eliminar una categoría
 
 - Método: `DELETE`
-- URL: `http://localhost:3000/api/categorias`
-- Body:
-
-```json
-{ "id": 1 }
-```
+- URL: `http://localhost:3000/api/categorias/1`
+- Sin body.
 
 ### Productos
 
@@ -142,12 +147,181 @@ Para cada request: elegir el método, poner la URL, y si hay body, en la pestañ
 #### Eliminar un producto
 
 - Método: `DELETE`
-- URL: `http://localhost:3000/api/productos`
+- URL: `http://localhost:3000/api/productos/1`
+- Sin body.
+
+### Talles
+
+#### Crear un talle
+
+- Método: `POST`
+- URL: `http://localhost:3000/api/talles`
 - Body:
 
 ```json
-{ "id": 1 }
+{ "nombre": "M", "orden": 2 }
 ```
+
+#### Listar todos los talles
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/talles`
+- Sin body.
+
+#### Obtener un talle por id
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/talles/1`
+- Sin body.
+
+#### Actualizar un talle
+
+- Método: `PUT`
+- URL: `http://localhost:3000/api/talles/1`
+- Body:
+
+```json
+{ "orden": 3 }
+```
+
+#### Eliminar un talle
+
+- Método: `DELETE`
+- URL: `http://localhost:3000/api/talles/1`
+- Sin body.
+
+### Colores
+
+#### Crear un color
+
+- Método: `POST`
+- URL: `http://localhost:3000/api/colores`
+- Body:
+
+```json
+{ "nombre": "Negro", "hex": "#000000" }
+```
+
+#### Listar todos los colores
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/colores`
+- Sin body.
+
+#### Obtener un color por id
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/colores/1`
+- Sin body.
+
+#### Actualizar un color
+
+- Método: `PUT`
+- URL: `http://localhost:3000/api/colores/1`
+- Body:
+
+```json
+{ "hex": "#111111" }
+```
+
+#### Eliminar un color
+
+- Método: `DELETE`
+- URL: `http://localhost:3000/api/colores/1`
+- Sin body.
+
+### Variantes
+
+> Requiere que ya existan el `producto_id`, `color_id` y `talle_id` referenciados.
+
+#### Crear una variante
+
+- Método: `POST`
+- URL: `http://localhost:3000/api/variantes`
+- Body:
+
+```json
+{
+  "producto_id": 1,
+  "color_id": 1,
+  "talle_id": 1,
+  "sku": "REM-BAS-NEG-M",
+  "stock": 10
+}
+```
+
+#### Listar todas las variantes
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/variantes`
+- Sin body.
+
+#### Obtener una variante por id
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/variantes/1`
+- Sin body.
+
+#### Actualizar una variante
+
+- Método: `PUT`
+- URL: `http://localhost:3000/api/variantes/1`
+- Body:
+
+```json
+{ "stock": 15 }
+```
+
+#### Eliminar una variante
+
+- Método: `DELETE`
+- URL: `http://localhost:3000/api/variantes/1`
+- Sin body.
+
+### Métodos de pago
+
+#### Crear un método de pago
+
+- Método: `POST`
+- URL: `http://localhost:3000/api/metodos-pago`
+- Body:
+
+```json
+{
+  "codigo": "efectivo",
+  "nombre_visible": "Efectivo",
+  "activo": true,
+  "orden": 1
+}
+```
+
+#### Listar todos los métodos de pago
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/metodos-pago`
+- Sin body.
+
+#### Obtener un método de pago por id
+
+- Método: `GET`
+- URL: `http://localhost:3000/api/metodos-pago/1`
+- Sin body.
+
+#### Actualizar un método de pago
+
+- Método: `PUT`
+- URL: `http://localhost:3000/api/metodos-pago/1`
+- Body:
+
+```json
+{ "activo": false }
+```
+
+#### Eliminar un método de pago
+
+- Método: `DELETE`
+- URL: `http://localhost:3000/api/metodos-pago/1`
+- Sin body.
 
 ## Respuestas de error
 
