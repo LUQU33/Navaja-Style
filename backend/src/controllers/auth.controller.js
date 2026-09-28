@@ -198,6 +198,9 @@ async function register(req, res, next) {
       },
     });
   } catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ error: "El email ya está registrado" });
+    }
     next(error);
   }
 }
