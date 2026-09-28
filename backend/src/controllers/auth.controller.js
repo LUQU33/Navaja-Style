@@ -5,17 +5,39 @@ const {
 } = require("../utils/password");
 const { generarToken } = require("../utils/token");
 
+function bodyEsObjeto(body) {
+  return body !== null && typeof body === "object" && !Array.isArray(body);
+}
+
+function emailEsValido(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 async function login(req, res, next) {
   try {
+    if (!bodyEsObjeto(req.body)) {
+      return res.status(400).json({
+        error: "El cuerpo de la solicitud debe ser un objeto JSON",
+      });
+    }
+
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    if (typeof email !== "string" || typeof password !== "string") {
+      return res.status(400).json({
+        error: "Email y contraseña deben ser texto",
+      });
+    }
+
+    const emailNormalizado = email.trim().toLowerCase();
+
+    if (!emailNormalizado || password.length === 0) {
       return res.status(400).json({
         error: "Email y contraseña son obligatorios",
       });
     }
 
-    const usuario = await usuarioModel.buscarPorEmail(email);
+    const usuario = await usuarioModel.buscarPorEmail(emailNormalizado);
 
     if (!usuario) {
       return res.status(401).json({
@@ -60,6 +82,12 @@ async function login(req, res, next) {
 
 async function register(req, res, next) {
   try {
+    if (!bodyEsObjeto(req.body)) {
+      return res.status(400).json({
+        error: "El cuerpo de la solicitud debe ser un objeto JSON",
+      });
+    }
+
     const {
       nombre,
       apellido,
@@ -68,13 +96,79 @@ async function register(req, res, next) {
       telefono,
     } = req.body;
 
-    if (!nombre || !apellido || !email || !password) {
+    if (
+      typeof nombre !== "string" ||
+      typeof apellido !== "string" ||
+      typeof email !== "string" ||
+      typeof password !== "string"
+    ) {
+      return res.status(400).json({
+        error: "Nombre, apellido, email y contraseña deben ser texto",
+      });
+    }
+
+    if (
+      telefono !== undefined &&
+      telefono !== null &&
+      typeof telefono !== "string"
+    ) {
+      return res.status(400).json({
+        error: "El teléfono debe ser texto",
+      });
+    }
+
+    const nombreNormalizado = nombre.trim();
+    const apellidoNormalizado = apellido.trim();
+    const emailNormalizado = email.trim().toLowerCase();
+
+    if (
+      !nombreNormalizado ||
+      !apellidoNormalizado ||
+      !emailNormalizado ||
+      password.length === 0
+    ) {
       return res.status(400).json({
         error: "Nombre, apellido, email y contraseña son obligatorios",
       });
     }
 
-    const usuarioExistente = await usuarioModel.buscarPorEmail(email);
+    if (nombreNormalizado.length > 100) {
+      return res.status(400).json({
+        error: "El nombre no puede superar los 100 caracteres",
+      });
+    }
+
+    if (apellidoNormalizado.length > 100) {
+      return res.status(400).json({
+        error: "El apellido no puede superar los 100 caracteres",
+      });
+    }
+
+    if (emailNormalizado.length > 255) {
+      return res.status(400).json({
+        error: "El email no puede superar los 255 caracteres",
+      });
+    }
+
+    if (!emailEsValido(emailNormalizado)) {
+      return res.status(400).json({
+        error: "El formato del email no es válido",
+      });
+    }
+
+    if (password.length < 6 || password.length > 128) {
+      return res.status(400).json({
+        error: "La contraseña debe tener entre 6 y 128 caracteres",
+      });
+    }
+
+    if (typeof telefono === "string" && telefono.length > 30) {
+      return res.status(400).json({
+        error: "El teléfono no puede superar los 30 caracteres",
+      });
+    }
+
+    const usuarioExistente = await usuarioModel.buscarPorEmail(emailNormalizado);
 
     if (usuarioExistente) {
       return res.status(409).json({
@@ -85,9 +179,9 @@ async function register(req, res, next) {
     const passwordHash = await generarHash(password);
 
     const id = await usuarioModel.crearUsuario(
-      nombre,
-      apellido,
-      email,
+      nombreNormalizado,
+      apellidoNormalizado,
+      emailNormalizado,
       passwordHash,
       telefono
     );
@@ -96,9 +190,9 @@ async function register(req, res, next) {
       mensaje: "Usuario registrado correctamente",
       usuario: {
         id,
-        nombre,
-        apellido,
-        email,
+        nombre: nombreNormalizado,
+        apellido: apellidoNormalizado,
+        email: emailNormalizado,
         telefono: telefono || null,
         rol: "cliente",
       },

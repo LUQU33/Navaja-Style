@@ -81,3 +81,195 @@ Content-Type: application/json
   "email": "",
   "password": ""
 }
+
+### LOGIN - Sin body
+POST {{url}}/auth/login
+Content-Type: application/json
+
+### LOGIN - Body null
+POST {{url}}/auth/login
+Content-Type: application/json
+
+null
+
+### LOGIN - Body array
+POST {{url}}/auth/login
+Content-Type: application/json
+
+[]
+
+### LOGIN - Email y password no son strings
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": 123,
+  "password": true
+}
+
+### LOGIN - Email compuesto solo por espacios
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "   ",
+  "password": "123456"
+}
+
+### LOGIN - Password vacío
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@gmail.com",
+  "password": ""
+}
+
+### LOGIN - Email con espacios y mayúsculas
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "  PRUEBA@GMAIL.COM  ",
+  "password": "123456"
+}
+
+### REGISTER - Body null
+POST {{url}}/auth/register
+Content-Type: application/json
+
+null
+
+### REGISTER - Sin body
+POST {{url}}/auth/register
+Content-Type: application/json
+
+### REGISTER - Body array
+POST {{url}}/auth/register
+Content-Type: application/json
+
+[]
+
+### REGISTER - Campos obligatorios no son strings
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": 123,
+  "apellido": true,
+  "email": {},
+  "password": []
+}
+
+### REGISTER - Teléfono no es string
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "Usuario",
+  "email": "telefono-invalido@gmail.com",
+  "password": "123456",
+  "telefono": 3804111111
+}
+
+### REGISTER - Nombre y apellido compuestos solo por espacios
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "   ",
+  "apellido": "   ",
+  "email": "espacios@gmail.com",
+  "password": "123456"
+}
+
+### REGISTER - Email con formato inválido
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "Usuario",
+  "email": "email-invalido",
+  "password": "123456"
+}
+
+### REGISTER - Password menor a 6 caracteres
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "Usuario",
+  "email": "password-corto@gmail.com",
+  "password": "12345"
+}
+
+### REGISTER - Password mayor a 128 caracteres
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "Usuario",
+  "email": "password-largo@gmail.com",
+  "password": "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+}
+
+### REGISTER - Nombre mayor a 100 caracteres
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+  "apellido": "Usuario",
+  "email": "nombre-largo@gmail.com",
+  "password": "123456"
+}
+
+### REGISTER - Apellido mayor a 100 caracteres
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "email": "apellido-largo@gmail.com",
+  "password": "123456"
+}
+
+### REGISTER - Email mayor a 255 caracteres
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "Usuario",
+  "email": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee@a.com",
+  "password": "123456"
+}
+
+### REGISTER - Teléfono mayor a 30 caracteres
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo",
+  "apellido": "Usuario",
+  "email": "telefono-largo@gmail.com",
+  "password": "123456",
+  "telefono": "1111111111111111111111111111111"
+}
+
+### REGISTER - Datos normalizados y teléfono null
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "  Nombre  ",
+  "apellido": "  Apellido  ",
+  "email": "  NORMALIZADO@GMAIL.COM  ",
+  "password": "123456",
+  "telefono": null
+}
