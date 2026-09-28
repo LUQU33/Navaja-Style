@@ -1,5 +1,8 @@
 const usuarioModel = require("../models/usuario.model");
-const { verificarPassword } = require("../utils/password");
+const {
+  generarHash,
+  verificarPassword,
+} = require("../utils/password");
 const { generarToken } = require("../utils/token");
 
 async function login(req, res, next) {
@@ -55,6 +58,56 @@ async function login(req, res, next) {
   }
 }
 
+async function register(req, res, next) {
+  try {
+    const {
+      nombre,
+      apellido,
+      email,
+      password,
+      telefono,
+    } = req.body;
+
+    if (!nombre || !apellido || !email || !password) {
+      return res.status(400).json({
+        error: "Nombre, apellido, email y contraseña son obligatorios",
+      });
+    }
+
+    const usuarioExistente = await usuarioModel.buscarPorEmail(email);
+
+    if (usuarioExistente) {
+      return res.status(409).json({
+        error: "El email ya está registrado",
+      });
+    }
+
+    const passwordHash = await generarHash(password);
+
+    const id = await usuarioModel.crearUsuario(
+      nombre,
+      apellido,
+      email,
+      passwordHash,
+      telefono
+    );
+
+    return res.status(201).json({
+      mensaje: "Usuario registrado correctamente",
+      usuario: {
+        id,
+        nombre,
+        apellido,
+        email,
+        telefono: telefono || null,
+        rol: "cliente",
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 function me(req, res) {
   return res.json({
     usuario: req.usuario,
@@ -63,5 +116,6 @@ function me(req, res) {
 
 module.exports = {
   login,
+  register,
   me,
 };
