@@ -45,12 +45,6 @@ async function login(req, res, next) {
       });
     }
 
-    if (!usuario.activo) {
-      return res.status(403).json({
-        error: "Usuario inactivo",
-      });
-    }
-
     const passwordCorrecto = await verificarPassword(
       password,
       usuario.password_hash
@@ -59,6 +53,12 @@ async function login(req, res, next) {
     if (!passwordCorrecto) {
       return res.status(401).json({
         error: "Email o contraseña incorrectos",
+      });
+    }
+
+    if (!usuario.activo) {
+      return res.status(403).json({
+        error: "Usuario inactivo",
       });
     }
 
