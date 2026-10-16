@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useEffect, useState, useRef } from "react";
 import "./Navbar.css";
 
@@ -40,13 +41,13 @@ export default function Navbar({
           </svg>
         </button>
 
-        <button className="logo" aria-label="Navaja - Style, inicio">
+        <Link to="/" className="logo" aria-label="Navaja - Style, inicio">
           <svg className="mark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 15 L18 6 C20 5 22 6.5 21 8.5 L13 18 L3 15Z" stroke="#c65a44" strokeWidth="1.4" />
           </svg>
           <span className="logo-word">Navaja</span>
           <span className="logo-sub">Style</span>
-        </button>
+        </Link>
 
         <nav className={`links${menuOpen ? " open" : ""}`}>
           {links.map((link) => (
@@ -79,12 +80,12 @@ export default function Navbar({
             </svg>
           </button>
 
-          <button className="icon-btn" aria-label="Mi cuenta">
+          <Link to="/login" className="icon-btn" aria-label="Mi cuenta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="8" r="3.4" />
               <path d="M4.5 20c1.4-3.6 4.2-5.4 7.5-5.4s6.1 1.8 7.5 5.4" />
             </svg>
-          </button>
+          </Link>
 
           <button className="icon-btn" aria-label="Carrito">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
