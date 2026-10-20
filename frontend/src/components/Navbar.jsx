@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useEffect, useState, useRef } from "react";
 import "./Navbar.css";
 
-const DEFAULT_LINKS = ["Colección", "Accesorios", "Cuidado", "Rebajas"];
+const DEFAULT_LINKS = ["Colección", "Accesorios", "Cuidado"];
 
 export default function Navbar({
   links = DEFAULT_LINKS,
@@ -51,9 +51,15 @@ export default function Navbar({
 
         <nav className={`links${menuOpen ? " open" : ""}`}>
           {links.map((link) => (
-            <a key={link} className="nav-link" href={`#${link.toLowerCase()}`}>
+            <Link 
+              key={link} 
+              className="nav-link" 
+              to={`/catalogo?categoria=${encodeURIComponent(link)}`}
+              onClick={() => setMenuOpen(false)}
+              //El onClick cierra el menu hamburguesa despues de tocar una opcion
+            >
               {link}
-            </a>
+            </Link>
           ))}
         </nav>
 

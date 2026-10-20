@@ -1,4 +1,4 @@
-import { useState  } from "react"
+import { useSearchParams  } from "react-router-dom"
 import ProductCard from "../components/ProductCard"
 import { PRODUCTS } from "../data/products"
 import "./Catalogo.css"
@@ -6,7 +6,15 @@ import "./Catalogo.css"
 const CATEGORIES = ["Todos", ...new Set(PRODUCTS.map((p) => p.category))];
 
 export default function Catalogo() {
-    const [active, setActive] = useState("Todos");
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const param = searchParams.get("categoria");
+    const active = CATEGORIES.includes(param) ? param : "Todos";
+
+    const selectCategory = (cat) => {
+        if (cat === "Todos") setSearchParams({});
+        else setSearchParams({ categoria: cat });
+    };
 
     const visible = 
         active === "Todos"
@@ -26,7 +34,7 @@ export default function Catalogo() {
                     <button
                         key={cat}
                         className={`chip${active === cat ? " active" : ""}`}
-                        onClick={() => setActive(cat)}
+                        onClick={() => selectCategory(cat)}
                     >
                         {cat}
                     </button>

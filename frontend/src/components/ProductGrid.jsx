@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import ProductCard from "./ProductCard";
 import "./ProductGrid.css";
 
@@ -20,7 +21,7 @@ export default function ProductGrid({
           <div className="eyebrow">{eyebrow}</div>
           <h2>{title}</h2>
         </div>
-        <a className="view-all" href="#catalogo">Ver todo el catálogo</a>
+        <Link className="view-all" to="/catalogo">Ver todo el catálogo</Link>
       </div>
 
       <div className="grid">
