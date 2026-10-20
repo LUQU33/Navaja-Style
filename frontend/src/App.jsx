@@ -1,28 +1,20 @@
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import ProductGrid from './components/ProductGrid'
-import Footer from './components/Footer'
-import './App.css'
-
-function App() {
-
-  return (
-    <>
-      <Navbar />
-      <Hero />  
-      <ProductGrid />
-      <Footer/>
-    </>
-  )
-}
-
-export default App
-
-/*import AuthForm from './components/AuthForm';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Catalogo from './pages/Catalogo';
 import './App.css';
 
 function App() {
-  return <AuthForm />;
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/catalogo" element={<Catalogo />} />
+      </Route>
+    </Routes>
+  );
 }
 
-export default App;*/
+export default App;
