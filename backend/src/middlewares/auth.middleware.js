@@ -5,7 +5,8 @@ function verificarAutenticacion(req, res, next) {
 
   if (!header) {
     return res.status(401).json({
-      error: "Token no enviado",
+      success: false,
+      message: "Token no enviado",
     });
   }
 
@@ -13,7 +14,8 @@ function verificarAutenticacion(req, res, next) {
 
   if (partes.length !== 2 || partes[0] !== "Bearer") {
     return res.status(401).json({
-      error: "Formato de token invalido",
+      success: false,
+      message: "Formato de token invalido",
     });
   }
 
@@ -23,7 +25,8 @@ function verificarAutenticacion(req, res, next) {
 
   if (!payload) {
     return res.status(401).json({
-      error: "Token invalido o vencido",
+      success: false,
+      message: "Token invalido o vencido",
     });
   }
 
@@ -32,6 +35,18 @@ function verificarAutenticacion(req, res, next) {
   next();
 }
 
+function soloAdmin(req, res, next) {
+  if (!req.usuario || req.usuario.rol !== "admin") {
+    return res.status(403).json({
+      success: false,
+      message: "Acceso restringido a administradores",
+    });
+  }
+
+  next();
+}
+
 module.exports = {
   verificarAutenticacion,
+  soloAdmin,
 };
