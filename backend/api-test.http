@@ -273,3 +273,147 @@ Content-Type: application/json
   "password": "123456",
   "telefono": null
 }
+
+
+################################################################
+### FASE 1 - Validaciones y permisos del catálogo
+### Pegar acá los tokens obtenidos con POST /auth/login
+### (data.token). El admin necesita rol = 'admin' en la tabla usuarios.
+################################################################
+@adminToken = PEGAR_TOKEN_ADMIN
+@clienteToken = PEGAR_TOKEN_CLIENTE
+
+### Catálogo - GET público (sin token)
+GET {{url}}/categorias
+
+### Catálogo - POST sin token (401)
+POST {{url}}/categorias
+Content-Type: application/json
+
+{ "nombre": "Remeras" }
+
+### Catálogo - POST con token de cliente (403)
+POST {{url}}/categorias
+Content-Type: application/json
+Authorization: Bearer {{clienteToken}}
+
+{ "nombre": "Remeras" }
+
+### Categoría - crear OK (admin)
+POST {{url}}/categorias
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Remeras" }
+
+### Categoría - sin nombre (400)
+POST {{url}}/categorias
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{}
+
+### Categoría - nombre duplicado (409)
+POST {{url}}/categorias
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Remeras" }
+
+### Categoría - PUT sin campos (400)
+PUT {{url}}/categorias/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{}
+
+### Categoría - borrar con productos asociados (409)
+DELETE {{url}}/categorias/1
+Authorization: Bearer {{adminToken}}
+
+### Id inválido (400)
+GET {{url}}/productos/abc
+
+### Color - hex inválido (400)
+POST {{url}}/colores
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Rojo", "hex": "rojo" }
+
+### Color - OK
+POST {{url}}/colores
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Rojo", "hex": "#FF0000" }
+
+### Talle - OK
+POST {{url}}/talles
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "M", "orden": 2 }
+
+### Producto - OK
+POST {{url}}/productos
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Remera básica", "descripcion": "Algodón", "precio": 15999.90, "categoria_id": 1 }
+
+### Producto - datos inválidos (400)
+POST {{url}}/productos
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Remera", "precio": "abc", "categoria_id": 0, "estado": "x" }
+
+### Producto - precio con 3 decimales (400)
+POST {{url}}/productos
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Remera", "precio": 10.555, "categoria_id": 1 }
+
+### Producto - categoría inexistente (400, FK)
+POST {{url}}/productos
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "nombre": "Remera", "precio": 100, "categoria_id": 99999 }
+
+### Variante - OK
+POST {{url}}/variantes
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "producto_id": 1, "color_id": 1, "talle_id": 1, "sku": "REM-ROJ-M-001", "stock": 10 }
+
+### Variante - stock negativo (400)
+POST {{url}}/variantes
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "producto_id": 1, "color_id": 1, "talle_id": 1, "stock": -1 }
+
+### Método de pago - OK
+POST {{url}}/metodos-pago
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{ "codigo": "tarjeta", "nombre_visible": "Tarjeta de crédito", "activo": true, "orden": 1 }
+
+### Perfil - PUT sin campos (400)
+PUT {{url}}/usuarios/me
+Content-Type: application/json
+Authorization: Bearer {{clienteToken}}
+
+{}
+
+### Perfil - teléfono demasiado largo (400)
+PUT {{url}}/usuarios/me
+Content-Type: application/json
+Authorization: Bearer {{clienteToken}}
+
+{ "telefono": "1234567890123456789012345678901234567890" }
