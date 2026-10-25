@@ -9,7 +9,10 @@ async function buscarPorEmail(email) {
   return rows[0];
 }
 async function buscarPorId(id) {
-  const [rows] = await pool.execute("SELECT * FROM usuarios WHERE id = ?", [id]);
+  const [rows] = await pool.execute(
+    "SELECT id, nombre, apellido, email, telefono, rol, activo FROM usuarios WHERE id = ?",
+    [id]
+  );
   return rows[0];
 }
 
