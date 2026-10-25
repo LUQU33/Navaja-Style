@@ -3,12 +3,12 @@ const ApiError = require("./ApiError");
 function crearControllerCRUD({ modelo, nombreEntidad, campoNombre }) {
   async function crear(req, res) {
     const item = await modelo.crear(req.body);
-    res.status(201).json(item);
+    res.status(201).json({ success: true, data: item });
   }
 
   async function listar(req, res) {
     const items = await modelo.listar();
-    res.json(items);
+    res.json({ success: true, data: items });
   }
 
   async function obtenerPorId(req, res) {
@@ -19,7 +19,7 @@ function crearControllerCRUD({ modelo, nombreEntidad, campoNombre }) {
       throw new ApiError(404, `${nombreEntidad} con id ${id} no encontrado`);
     }
 
-    res.json(item);
+    res.json({ success: true, data: item });
   }
 
   async function actualizar(req, res) {
@@ -30,7 +30,7 @@ function crearControllerCRUD({ modelo, nombreEntidad, campoNombre }) {
       throw new ApiError(404, `${nombreEntidad} con id ${id} no encontrado`);
     }
 
-    res.json(item);
+    res.json({ success: true, data: item });
   }
 
   async function eliminar(req, res) {
@@ -45,7 +45,7 @@ function crearControllerCRUD({ modelo, nombreEntidad, campoNombre }) {
       ? `${item[campoNombre]} eliminado correctamente`
       : `${nombreEntidad} #${id} eliminado correctamente`;
 
-    res.json({ mensaje });
+    res.json({ success: true, message: mensaje });
   }
 
   return { crear, listar, obtenerPorId, actualizar, eliminar };

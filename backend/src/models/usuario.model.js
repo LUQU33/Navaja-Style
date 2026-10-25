@@ -8,13 +8,11 @@ async function buscarPorEmail(email) {
 
   return rows[0];
 }
-
 async function buscarPorId(id) {
   const [rows] = await pool.query(
-    "SELECT id, nombre, apellido, email, rol, activo FROM usuarios WHERE id = ?",
+    "SELECT id, nombre, apellido, email, telefono, rol, activo FROM usuarios WHERE id = ?",
     [id]
   );
-
   return rows[0];
 }
 
@@ -29,7 +27,34 @@ async function crearUsuario(nombre, apellido, email, passwordHash, telefono) {
   return resultado.insertId;
 }
 
+async function actualizarPorId(id, campos) {
+  const permitidos = ["nombre", "apellido", "telefono", "password_hash"];
+  const sets = [];
+  const valores = [];
+
+  for (const campo of permitidos) {
+    if (campos[campo] !== undefined) {
+      sets.push(`${campo} = ?`);
+      valores.push(campos[campo]);
+    }
+  }
+
+  if (sets.length === 0) return null;
+
+  sets.push("updated_at = NOW()");
+  valores.push(id);
+
+  await pool.query(
+    `UPDATE usuarios SET ${sets.join(", ")} WHERE id = ?`,
+    valores
+  );
+
+  return buscarPorId(id);
+}
+
 module.exports = {
-  buscarPorEmail, crearUsuario, buscarPorId,
-  
+  buscarPorEmail,
+  buscarPorId,
+  crearUsuario,
+  actualizarPorId,
 };
