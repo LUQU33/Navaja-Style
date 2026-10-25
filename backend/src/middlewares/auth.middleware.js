@@ -1,6 +1,7 @@
 const { verificarToken } = require("../utils/token");
+const usuarioModel = require("../models/usuario.model");
 
-function verificarAutenticacion(req, res, next) {
+async function verificarAutenticacion(req, res, next) {
   const header = req.headers.authorization;
 
   if (!header) {
@@ -21,18 +22,38 @@ function verificarAutenticacion(req, res, next) {
 
   const token = partes[1];
 
-  const payload = verificarToken(token);
+  try {
+    const payload = verificarToken(token);
 
-  if (!payload) {
-    return res.status(401).json({
-      success: false,
-      message: "Token invalido o vencido",
-    });
+    if (!payload) {
+      return res.status(401).json({
+        success: false,
+        message: "Token invalido o vencido",
+      });
+    }
+
+    const usuario = await usuarioModel.buscarPorId(payload.id);
+
+    if (!usuario || !usuario.activo) {
+      return res.status(401).json({
+        success: false,
+        message: "Token invalido o vencido",
+      });
+    }
+
+    req.usuario = {
+      id: usuario.id,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      email: usuario.email,
+      rol: usuario.rol,
+      exp: payload.exp,
+    };
+
+    next();
+  } catch (error) {
+    next(error);
   }
-
-  req.usuario = payload;
-
-  next();
 }
 
 function soloAdmin(req, res, next) {
