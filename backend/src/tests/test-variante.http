@@ -1,0 +1,47 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "nuevo@gmail.com",
+    "password": "123456"
+}
+
+### Token 
+@token = {{login.response.body.data.token}}
+
+### Obtener variantes
+GET {{url}}/variantes 
+
+### Crear variante
+POST {{url}}/variantes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "producto_id": 1,
+    "color_id": 3,
+    "talle_id": 3
+}
+
+### Obtener variante por id
+GET {{url}}/variantes/4
+Authorization: Bearer {{token}}
+
+### Actualizar variante
+PUT {{url}}/variantes/4
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "producto_id": 1,
+    "color_id": 3,
+    "talle_id": 2
+}
+
+### Eliminar variante
+DELETE {{url}}/variantes/4
+Authorization: Bearer {{token}}

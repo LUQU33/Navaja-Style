@@ -1,7 +1,7 @@
 const pool = require("../config/db.config");
 
 async function buscarPorEmail(email) {
-  const [rows] = await pool.query(
+  const [rows] = await pool.execute(
     "SELECT * FROM usuarios WHERE email = ?",
     [email]
   );
@@ -9,15 +9,15 @@ async function buscarPorEmail(email) {
   return rows[0];
 }
 async function buscarPorId(id) {
-  const [rows] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id]);
+  const [rows] = await pool.execute("SELECT * FROM usuarios WHERE id = ?", [id]);
   return rows[0];
 }
 
 async function crearUsuario(nombre, apellido, email, passwordHash, telefono) {
-  const [resultado] = await pool.query(
+  const [resultado] = await pool.execute(
     `INSERT INTO usuarios
       (nombre, apellido, email, password_hash, telefono)
-     VALUES (?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?)`,
     [nombre, apellido, email, passwordHash, telefono || null]
   );
 
@@ -41,7 +41,7 @@ async function actualizarPorId(id, campos) {
   sets.push("updated_at = NOW()");
   valores.push(id);
 
-  await pool.query(
+  await pool.execute(
     `UPDATE usuarios SET ${sets.join(", ")} WHERE id = ?`,
     valores
   );

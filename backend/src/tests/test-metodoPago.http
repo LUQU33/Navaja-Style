@@ -1,0 +1,45 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "nuevo@gmail.com",
+    "password": "123456"
+}
+
+### Token 
+@token = {{login.response.body.data.token}}
+
+### Obtener metodos-pago
+GET {{url}}/metodos-pago 
+
+### Crear metodo de pago
+POST {{url}}/metodos-pago
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre_visible": "Metodo de pago de prueba",
+    "codigo": "metodo_pago_prueba01"
+}
+
+### Obtener metodo de pago por id
+GET {{url}}/metodos-pago/3
+Authorization: Bearer {{token}}
+
+### Actualizar metodo de pago
+PUT {{url}}/metodos-pago/5
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre_visible": "Metodo de pago de prueba actualizado",
+    "codigo": "metodo_pago_prueba_act01"
+}
+
+### Eliminar metodo de pago
+DELETE {{url}}/metodos-pago/5
+Authorization: Bearer {{token}}
