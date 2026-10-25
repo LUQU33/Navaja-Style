@@ -1,0 +1,47 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "nuevo@gmail.com",
+    "password": "123456"
+}
+
+### Token 
+@token = {{login.response.body.data.token}}
+
+### Obtener productos
+GET {{url}}/productos 
+
+### Crear producto
+POST {{url}}/productos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Producto de prueba",
+    "precio": 15000,
+    "categoria_id": 1
+}
+
+### Obtener producto por id
+GET {{url}}/productos/5
+Authorization: Bearer {{token}}
+
+### Actualizar producto
+PUT {{url}}/productos/5
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Producto de prueba actualizado",
+    "precio": 20000,
+    "categoria_id": 2
+}
+
+### Eliminar producto
+DELETE {{url}}/productos/5
+Authorization: Bearer {{token}}
