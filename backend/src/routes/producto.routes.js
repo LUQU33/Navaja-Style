@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 const productoController = require("../controllers/producto.controller");
 const { verificarAutenticacion, soloAdmin } = require("../middlewares/auth.middleware");
 const { validarId, verificarValidaciones } = require("../middlewares/validaciones.middleware");
@@ -26,6 +26,12 @@ const validacionProducto = [
     .isIn(["activo", "inactivo", "borrador"]),
 ];
 
+const validacionFiltroCategoria = [
+  query("categoria", "La categoría debe ser un entero positivo")
+    .optional()
+    .isInt({ min: 1 }),
+];
+
 router.post(
   "/productos",
   verificarAutenticacion,
@@ -34,8 +40,29 @@ router.post(
   verificarValidaciones,
   productoController.crear
 );
-router.get("/productos", productoController.listar);
+router.get(
+  "/productos",
+  validacionFiltroCategoria,
+  verificarValidaciones,
+  productoController.listar
+);
 router.get("/productos/:id", validarId, verificarValidaciones, productoController.obtenerPorId);
+router.get(
+  "/admin/productos",
+  verificarAutenticacion,
+  soloAdmin,
+  validacionFiltroCategoria,
+  verificarValidaciones,
+  productoController.listarAdmin
+);
+router.get(
+  "/admin/productos/:id",
+  verificarAutenticacion,
+  soloAdmin,
+  validarId,
+  verificarValidaciones,
+  productoController.obtenerPorIdAdmin
+);
 router.put(
   "/productos/:id",
   verificarAutenticacion,

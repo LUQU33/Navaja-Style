@@ -13,8 +13,15 @@ Content-Type: application/json
 ### Token 
 @token = {{login.response.body.data.token}}
 
-### Obtener productos
+### Catálogo público: todas las categorias
 GET {{url}}/productos 
+
+### Catálogo público: filtrar por categoría
+GET {{url}}/productos?categoria=2
+
+### Admin: listado con todos los estados
+GET {{url}}/admin/productos
+Authorization: Bearer {{token}}
 
 ### Crear producto
 POST {{url}}/productos
@@ -27,19 +34,23 @@ Authorization: Bearer {{token}}
     "categoria_id": 1
 }
 
-### Obtener producto por id
-GET {{url}}/productos/5
+### Catálogo público: detalle con variantes
+GET {{url}}/productos/1
+
+### Admin: detalle de un producto no activo
+GET {{url}}/admin/productos/6
 Authorization: Bearer {{token}}
 
 ### Actualizar producto
-PUT {{url}}/productos/5
+PUT {{url}}/productos/6
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "nombre": "Producto de prueba actualizado",
     "precio": 20000,
-    "categoria_id": 2
+    "categoria_id": 2,
+    "estado": "inactivo"
 }
 
 ### Eliminar producto
