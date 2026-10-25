@@ -6,14 +6,40 @@ async function crear(req, res) {
   res.status(201).json({ success: true, data: item });
 }
 
+function categoriaDeQuery(req) {
+  return req.query.categoria ? Number(req.query.categoria) : null;
+}
+
 async function listar(req, res) {
-  const items = await productoModel.listar();
+  const items = await productoModel.listarCatalogo({
+    categoriaId: categoriaDeQuery(req),
+    soloActivos: true,
+  });
   res.json({ success: true, data: items });
 }
 
 async function obtenerPorId(req, res) {
   const id = Number(req.params.id);
-  const item = await productoModel.buscarPorId(id);
+  const item = await productoModel.buscarDetalle(id, { soloActivos: true });
+
+  if (!item) {
+    throw new ApiError(404, `Producto con id ${id} no encontrado`);
+  }
+
+  res.json({ success: true, data: item });
+}
+
+async function listarAdmin(req, res) {
+  const items = await productoModel.listarCatalogo({
+    categoriaId: categoriaDeQuery(req),
+    soloActivos: false,
+  });
+  res.json({ success: true, data: items });
+}
+
+async function obtenerPorIdAdmin(req, res) {
+  const id = Number(req.params.id);
+  const item = await productoModel.buscarDetalle(id, { soloActivos: false });
 
   if (!item) {
     throw new ApiError(404, `Producto con id ${id} no encontrado`);
@@ -44,4 +70,4 @@ async function eliminar(req, res) {
   res.json({ success: true, message: `${item.nombre} eliminado correctamente` });
 }
 
-module.exports = { crear, listar, obtenerPorId, actualizar, eliminar };
+module.exports = { crear, listar, obtenerPorId, listarAdmin, obtenerPorIdAdmin, actualizar, eliminar };
