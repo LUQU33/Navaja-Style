@@ -9,4 +9,17 @@ async function listar(req, res, next) {
   }
 }
 
-module.exports = { listar };
+async function crear(req, res, next) {
+  try {
+    const direccion = await direccionModel.crear(req.usuario.id, req.body);
+    return res.status(201).json({
+      success: true,
+      message: "Dirección creada correctamente",
+      data: direccion,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { listar, crear };
