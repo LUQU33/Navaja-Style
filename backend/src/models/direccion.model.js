@@ -40,4 +40,25 @@ async function crear(usuarioId, direccion) {
   return rows[0];
 }
 
-module.exports = { listarPorUsuario, crear };
+async function actualizar(id, usuarioId, campos) {
+  const permitidos = ["calle", "numero", "ciudad", "provincia", "codigo_postal"];
+  const nombres = permitidos.filter((campo) => campos[campo] !== undefined);
+  const valores = nombres.map((campo) => campos[campo]);
+
+  await pool.query(
+    `UPDATE direcciones SET ${nombres.map((campo) => `${campo} = ?`).join(", ")}
+     WHERE id = ? AND usuario_id = ?`,
+    [...valores, id, usuarioId]
+  );
+
+  const [rows] = await pool.query(
+    `SELECT id, calle, numero, piso_depto, ciudad, provincia,
+            codigo_postal, referencia, es_principal, created_at
+     FROM direcciones WHERE id = ? AND usuario_id = ?`,
+    [id, usuarioId]
+  );
+
+  return rows[0];
+}
+
+module.exports = { listarPorUsuario, crear, actualizar };

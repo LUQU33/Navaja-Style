@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { body } = require("express-validator");
 const direccionController = require("../controllers/direccion.controller");
 const { verificarAutenticacion } = require("../middlewares/auth.middleware");
-const { verificarValidaciones } = require("../middlewares/validaciones.middleware");
+const { validarId, verificarValidaciones } = require("../middlewares/validaciones.middleware");
 
 const router = Router();
 
@@ -25,6 +25,23 @@ const validarDireccion = [
     .not().exists(),
 ];
 
+const validarEdicion = [
+  body().custom((campos) =>
+    campos &&
+    typeof campos === "object" &&
+    !Array.isArray(campos) &&
+    Object.keys(campos).length > 0 &&
+    Object.keys(campos).every((campo) =>
+      ["calle", "numero", "ciudad", "provincia", "codigo_postal"].includes(campo)
+    )
+  ).withMessage("Enviá al menos un campo válido para actualizar"),
+  body("calle").optional().isString().trim().notEmpty().isLength({ max: 150 }),
+  body("numero").optional().isString().trim().notEmpty().isLength({ max: 20 }),
+  body("ciudad").optional().isString().trim().notEmpty().isLength({ max: 100 }),
+  body("provincia").optional().isString().trim().notEmpty().isLength({ max: 100 }),
+  body("codigo_postal").optional().isString().trim().notEmpty().isLength({ max: 20 }),
+];
+
 router.get(
   "/usuarios/me/direcciones",
   verificarAutenticacion,
@@ -36,6 +53,14 @@ router.post(
   validarDireccion,
   verificarValidaciones,
   direccionController.crear
+);
+router.put(
+  "/usuarios/me/direcciones/:id",
+  verificarAutenticacion,
+  validarId,
+  validarEdicion,
+  verificarValidaciones,
+  direccionController.actualizar
 );
 
 module.exports = router;
