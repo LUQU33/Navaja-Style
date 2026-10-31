@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Catalogo from './pages/Catalogo';
+import ProductDetail from './pages/ProductDetail';
 import './App.css';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/producto/:id" element={<ProductDetail />} />
       </Route>
     </Routes>
   );
