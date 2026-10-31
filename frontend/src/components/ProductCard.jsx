@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 import "./ProductCard.css";
 
 export default function ProductCard({ product }) {
-  const { name, category, price, colors = [], badge } = product;
+  const { id, name, category, price, colors = [], badge } = product;
 
   return (
     <article className="navaja-card">
@@ -15,7 +16,7 @@ export default function ProductCard({ product }) {
 
       <div className="info">
         <span className="category">{category}</span>
-        <h3 className="name">{name}</h3>
+        <h3 className="name"><Link to={`/producto/${id}`}>{name}</Link></h3>
         <div className="row-bottom">
           <span className="price">{price}</span>
           {colors.length > 0 && (
