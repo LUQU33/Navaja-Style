@@ -64,5 +64,12 @@ router.put(
   verificarValidaciones,
   direccionController.actualizar
 );
+router.delete(
+  "/usuarios/me/direcciones/:id",
+  verificarAutenticacion,
+  validarId,
+  verificarValidaciones,
+  direccionController.eliminar
+);
 
 module.exports = router;

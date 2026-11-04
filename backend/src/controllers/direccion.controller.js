@@ -44,4 +44,18 @@ async function actualizar(req, res, next) {
   }
 }
 
-module.exports = { listar, crear, actualizar };
+async function eliminar(req, res, next) {
+  try {
+    const eliminada = await direccionModel.eliminar(req.params.id, req.usuario.id);
+
+    if (!eliminada) {
+      return res.status(404).json({ success: false, message: "Dirección no encontrada" });
+    }
+
+    return res.json({ success: true, message: "Dirección eliminada correctamente" });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { listar, crear, actualizar, eliminar };

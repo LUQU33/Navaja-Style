@@ -64,4 +64,13 @@ async function actualizar(id, usuarioId, campos) {
   return rows[0];
 }
 
-module.exports = { listarPorUsuario, crear, actualizar };
+async function eliminar(id, usuarioId) {
+  const [resultado] = await pool.query(
+    "DELETE FROM direcciones WHERE id = ? AND usuario_id = ?",
+    [id, usuarioId]
+  );
+
+  return resultado.affectedRows > 0;
+}
+
+module.exports = { listarPorUsuario, crear, actualizar, eliminar };
