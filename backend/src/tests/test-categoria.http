@@ -1,0 +1,43 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "nuevo@gmail.com",
+    "password": "123456"
+}
+
+### Token 
+@token = {{login.response.body.data.token}} 
+
+### Obtener categorias
+GET {{url}}/categorias 
+
+### Crear categoria
+POST {{url}}/categorias
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Categoria de prueba"
+}
+
+### Obtener categoria por id
+GET {{url}}/categorias/8
+Authorization: Bearer {{token}}
+
+### Actualizar categoria
+PUT {{url}}/categorias/8
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Categoria de prueba actualizada"
+}
+
+### Eliminar categoria
+DELETE {{url}}/categorias/8
+Authorization: Bearer {{token}}

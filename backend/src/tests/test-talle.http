@@ -1,0 +1,43 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "nuevo@gmail.com",
+    "password": "123456"
+}
+
+### Token 
+@token = {{login.response.body.data.token}}
+
+### Obtener talles
+GET {{url}}/talles 
+
+### Crear talle
+POST {{url}}/talles
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Talle de prueba"
+}
+
+### Obtener talle por id
+GET {{url}}/talles/5
+Authorization: Bearer {{token}}
+
+### Actualizar talle
+PUT {{url}}/talles/9
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Talle de prueba act"
+}
+
+### Eliminar talle
+DELETE {{url}}/talles/9
+Authorization: Bearer {{token}}

@@ -1,0 +1,58 @@
+@url=http://localhost:3000/api
+
+### Login correcto
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "nuevo@gmail.com",
+    "password": "123456"
+}
+
+### Token 
+@token = {{login.response.body.data.token}}
+
+### Catálogo público: todas las categorias
+GET {{url}}/productos 
+
+### Catálogo público: filtrar por categoría
+GET {{url}}/productos?categoria=2
+
+### Admin: listado con todos los estados
+GET {{url}}/admin/productos
+Authorization: Bearer {{token}}
+
+### Crear producto
+POST {{url}}/productos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Producto de prueba",
+    "precio": 15000,
+    "categoria_id": 1
+}
+
+### Catálogo público: detalle con variantes
+GET {{url}}/productos/1
+
+### Admin: detalle de un producto no activo
+GET {{url}}/admin/productos/6
+Authorization: Bearer {{token}}
+
+### Actualizar producto
+PUT {{url}}/productos/6
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Producto de prueba actualizado",
+    "precio": 20000,
+    "categoria_id": 2,
+    "estado": "inactivo"
+}
+
+### Eliminar producto
+DELETE {{url}}/productos/5
+Authorization: Bearer {{token}}
