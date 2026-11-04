@@ -26,15 +26,15 @@ const validarDireccion = [
 ];
 
 const validarEdicion = [
-  body().custom((campos) =>
-    campos &&
-    typeof campos === "object" &&
-    !Array.isArray(campos) &&
-    Object.keys(campos).length > 0 &&
-    Object.keys(campos).every((campo) =>
+  body().custom((campos) => {
+    if (!campos || typeof campos !== "object" || Array.isArray(campos)) return false;
+    const nombres = Object.keys(campos);
+    if (nombres.length === 0) return false;
+    if ("es_principal" in campos) return nombres.length === 1;
+    return nombres.every((campo) =>
       ["calle", "numero", "piso_depto", "ciudad", "provincia", "codigo_postal", "referencia"].includes(campo)
-    )
-  ).withMessage("Enviá al menos un campo válido para actualizar"),
+    );
+  }).withMessage("Enviá campos válidos para actualizar"),
   body("calle").optional().isString().trim().notEmpty().isLength({ max: 150 }),
   body("numero").optional().isString().trim().notEmpty().isLength({ max: 20 }),
   body("piso_depto").optional({ values: "null" }).isString().trim().notEmpty().isLength({ max: 30 }),
@@ -42,6 +42,8 @@ const validarEdicion = [
   body("provincia").optional().isString().trim().notEmpty().isLength({ max: 100 }),
   body("codigo_postal").optional().isString().trim().notEmpty().isLength({ max: 20 }),
   body("referencia").optional({ values: "null" }).isString().trim().notEmpty(),
+  body("es_principal").optional().custom((valor) => valor === true)
+    .withMessage("es_principal debe ser true"),
 ];
 
 router.get(

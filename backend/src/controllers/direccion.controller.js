@@ -24,11 +24,9 @@ async function crear(req, res, next) {
 
 async function actualizar(req, res, next) {
   try {
-    const direccion = await direccionModel.actualizar(
-      req.params.id,
-      req.usuario.id,
-      req.body
-    );
+    const direccion = req.body.es_principal === true
+      ? await direccionModel.marcarPrincipal(req.params.id, req.usuario.id)
+      : await direccionModel.actualizar(req.params.id, req.usuario.id, req.body);
 
     if (!direccion) {
       return res.status(404).json({ success: false, message: "Dirección no encontrada" });

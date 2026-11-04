@@ -73,4 +73,52 @@ async function eliminar(id, usuarioId) {
   return resultado.affectedRows > 0;
 }
 
-module.exports = { listarPorUsuario, crear, actualizar, eliminar };
+async function marcarPrincipal(id, usuarioId) {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+    await connection.query("SELECT id FROM usuarios WHERE id = ? FOR UPDATE", [usuarioId]);
+
+    const [existentes] = await connection.query(
+      "SELECT id FROM direcciones WHERE id = ? AND usuario_id = ? FOR UPDATE",
+      [id, usuarioId]
+    );
+
+    if (existentes.length === 0) {
+      await connection.rollback();
+      return null;
+    }
+
+    await connection.query(
+      "UPDATE direcciones SET es_principal = FALSE WHERE usuario_id = ? AND es_principal = TRUE",
+      [usuarioId]
+    );
+    const [resultado] = await connection.query(
+      "UPDATE direcciones SET es_principal = TRUE WHERE id = ? AND usuario_id = ?",
+      [id, usuarioId]
+    );
+
+    if (resultado.affectedRows === 0) {
+      await connection.rollback();
+      return null;
+    }
+
+    const [rows] = await connection.query(
+      `SELECT id, calle, numero, piso_depto, ciudad, provincia,
+              codigo_postal, referencia, es_principal, created_at
+       FROM direcciones WHERE id = ? AND usuario_id = ?`,
+      [id, usuarioId]
+    );
+
+    await connection.commit();
+    return rows[0];
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+module.exports = { listarPorUsuario, crear, actualizar, eliminar, marcarPrincipal };
