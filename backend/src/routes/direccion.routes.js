@@ -32,14 +32,16 @@ const validarEdicion = [
     !Array.isArray(campos) &&
     Object.keys(campos).length > 0 &&
     Object.keys(campos).every((campo) =>
-      ["calle", "numero", "ciudad", "provincia", "codigo_postal"].includes(campo)
+      ["calle", "numero", "piso_depto", "ciudad", "provincia", "codigo_postal", "referencia"].includes(campo)
     )
   ).withMessage("Enviá al menos un campo válido para actualizar"),
   body("calle").optional().isString().trim().notEmpty().isLength({ max: 150 }),
   body("numero").optional().isString().trim().notEmpty().isLength({ max: 20 }),
+  body("piso_depto").optional({ values: "null" }).isString().trim().notEmpty().isLength({ max: 30 }),
   body("ciudad").optional().isString().trim().notEmpty().isLength({ max: 100 }),
   body("provincia").optional().isString().trim().notEmpty().isLength({ max: 100 }),
   body("codigo_postal").optional().isString().trim().notEmpty().isLength({ max: 20 }),
+  body("referencia").optional({ values: "null" }).isString().trim().notEmpty(),
 ];
 
 router.get(

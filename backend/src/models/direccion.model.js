@@ -41,7 +41,10 @@ async function crear(usuarioId, direccion) {
 }
 
 async function actualizar(id, usuarioId, campos) {
-  const permitidos = ["calle", "numero", "ciudad", "provincia", "codigo_postal"];
+  const permitidos = [
+    "calle", "numero", "piso_depto", "ciudad", "provincia",
+    "codigo_postal", "referencia",
+  ];
   const nombres = permitidos.filter((campo) => campos[campo] !== undefined);
   const valores = nombres.map((campo) => campos[campo]);
 
