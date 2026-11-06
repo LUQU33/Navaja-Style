@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom"; 
 //UserParams lee el ID, llega como texto y se convierte en Number(id)
 // si no existe el ID, muestra un mensaje de error
@@ -6,6 +7,7 @@ import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const [selectedColor, setSelectedColor] = useState(null);
   const product = PRODUCTS.find((p) => p.id === Number(id));
 
   if (!product) {
@@ -20,7 +22,10 @@ export default function ProductDetail() {
     );
   }
 
-  const { name, category, price, description, badge } = product;
+  const { name, category, price, description, badge, colors = [] } = product;
+  const activeColor = colors.includes(selectedColor) ? selectedColor : colors[0];
+  //Utilizamos el color elegido y si no esta disponible lo elige por defecto 
+  //Esto evita un Bug
 
   return (
     <section className="navaja-detail">
@@ -39,6 +44,24 @@ export default function ProductDetail() {
           <h1>{name}</h1>
           <span className="price">{price}</span>
           <p className="description">{description}</p>
+            {colors.length > 0 && (
+                <div className="option">
+                    <span className="option-label">Color</span>
+                    <div className="swatches">
+                        {colors.map((c) => (
+                            <button
+                                key={c}
+                                type="button"
+                                className={`swatch${c === activeColor ? " active" : ""}`}
+                                style={{ background: c }}
+                                aria-label={`Color ${c}`}
+                                aria-pressed={c === activeColor}
+                                onClick={() => setSelectedColor(c)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
       </div>
     </section>

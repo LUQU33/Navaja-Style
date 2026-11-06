@@ -37,6 +37,34 @@
   align-items: start;
 }
 
+.navaja-detail .option {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.navaja-detail .option-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+}
+
+.navaja-detail .swatches { display: flex; gap: 12px; }
+.navaja-detail .swatch {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 242, 239, 0.35);
+  cursor: pointer;
+}
+.navaja-detail .swatch.active {
+  outline: 2px solid var(--ember-bright);
+  outline-offset: 3px;
+}
+
 .navaja-detail .media {
   aspect-ratio: 4 / 5;
   background: linear-gradient(155deg, #202020 0%, #131313 100%);
