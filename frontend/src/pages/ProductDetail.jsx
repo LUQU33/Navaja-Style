@@ -7,7 +7,7 @@ import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedColor, setSelectedColor, selectedSize, setSelectedSize] = useState(null);
   const product = PRODUCTS.find((p) => p.id === Number(id));
 
   if (!product) {
@@ -22,10 +22,12 @@ export default function ProductDetail() {
     );
   }
 
-  const { name, category, price, description, badge, colors = [] } = product;
+  const { name, category, price, description, badge, colors = [], sizes = [] } = product;
   const activeColor = colors.includes(selectedColor) ? selectedColor : colors[0];
   //Utilizamos el color elegido y si no esta disponible lo elige por defecto 
   //Esto evita un Bug
+  const activeSize = sizes.includes(selectedSize) ? selectedSize : null;
+  //Aca no tenemos valor por defecto.
 
   return (
     <section className="navaja-detail">
@@ -58,6 +60,25 @@ export default function ProductDetail() {
                                 aria-pressed={c === activeColor}
                                 onClick={() => setSelectedColor(c)}
                             />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {sizes.length > 0 && (
+                <div className="option">
+                    <span className="option-label">Talle</span>
+                    <div className="sizes">
+                        {sizes.map((s) => (
+                            <button
+                                key={s}
+                                type="button"
+                                className={`size${s === activeSize ? "active" : ""}`}
+                                aria-pressed={s === activeSize}
+                                onClick={() => setSelectedSize(s)}
+                            >
+                                {s}
+                            </button>
                         ))}
                     </div>
                 </div>

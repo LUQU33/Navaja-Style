@@ -65,6 +65,28 @@
   outline-offset: 3px;
 }
 
+.navaja-detail .sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.navaja-detail .size {
+  min-width: 46px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--steel-300);
+  background: transparent;
+  border: 1px solid rgba(138, 143, 152, 0.3);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.navaja-detail .size:hover {
+  color: var(--steel-100);
+  border-color: var(--steel-100);
+}
+.navaja-detail .size.active {
+  color: var(--bg);
+  background: var(--steel-100);
+  border-color: var(--steel-100);
+}
+
 .navaja-detail .media {
   aspect-ratio: 4 / 5;
   background: linear-gradient(155deg, #202020 0%, #131313 100%);
