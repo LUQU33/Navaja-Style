@@ -95,6 +95,8 @@
   align-items: center;
   justify-content: center;
 }
+
+
 .navaja-detail .media svg { width: 46%; opacity: 0.5; }
 
 .navaja-detail .info {
@@ -159,3 +161,31 @@
   .navaja-detail { padding: 32px 20px 72px; }
   .navaja-detail .layout { grid-template-columns: 1fr; gap: 28px; }
 }
+
+.navaja-detail .add-btn {
+  align-self: flex-start;
+  margin-top: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--steel-100);
+  border: none;
+  padding: 15px 32px;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.navaja-detail .add-btn:hover {
+  background: var(--ember-bright);
+  color: var(--steel-100);
+}
+
+.navaja-detail .feedback {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  margin: 12px 0 0;
+}
+.navaja-detail .feedback.error { color: #d9503f; }
+.navaja-detail .feedback.ok { color: var(--steel-300); }

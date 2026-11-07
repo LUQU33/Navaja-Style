@@ -8,6 +8,8 @@ import "./ProductDetail.css";
 export default function ProductDetail() {
   const { id } = useParams();
   const [selectedColor, setSelectedColor, selectedSize, setSelectedSize] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+
   const product = PRODUCTS.find((p) => p.id === Number(id));
 
   if (!product) {
@@ -28,6 +30,13 @@ export default function ProductDetail() {
   //Esto evita un Bug
   const activeSize = sizes.includes(selectedSize) ? selectedSize : null;
   //Aca no tenemos valor por defecto.
+  const handleAdd = () => {
+    if (sizes.length > 0 && !activeSize) {
+        setFeedback({ type: "error", text: "selecciona un talle para continuar." });
+        return;
+    }
+    setFeedback({ type: "ok", text: "Selecciona lista. El carrito se conecta en un proximo paso." });
+  };
 
   return (
     <section className="navaja-detail">
@@ -73,15 +82,21 @@ export default function ProductDetail() {
                             <button
                                 key={s}
                                 type="button"
-                                className={`size${s === activeSize ? "active" : ""}`}
+                                className={`size${s === activeSize ? " active" : ""}`}
                                 aria-pressed={s === activeSize}
-                                onClick={() => setSelectedSize(s)}
+                                onClick={() => { setSelectedSize(s); setFeedback(null);}}
                             >
                                 {s}
                             </button>
                         ))}
                     </div>
                 </div>
+            )}
+            <button type="button" className="add-btn" onClick={handleAdd}>
+                Agregar al carrito
+            </button>
+            {feedback && (
+                <p className={`feedback ${feedback.type}`} role="status">{feedback.text}</p>
             )}
         </div>
       </div>
