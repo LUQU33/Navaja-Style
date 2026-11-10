@@ -7,7 +7,8 @@ import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [selectedColor, setSelectedColor, selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null)
   const [feedback, setFeedback] = useState(null);
 
   const product = PRODUCTS.find((p) => p.id === Number(id));
