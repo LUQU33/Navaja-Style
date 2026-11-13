@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { useCart } from "../context/cartContext";
 import { useEffect, useState, useRef } from "react";
 import "./Navbar.css";
 
@@ -6,9 +7,9 @@ const DEFAULT_LINKS = ["Colección", "Accesorios", "Cuidado"];
 
 export default function Navbar({
   links = DEFAULT_LINKS,
-  cartCount = 0,
   onSearch = () => {},
 }) {
+  const { count: cartCount } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");

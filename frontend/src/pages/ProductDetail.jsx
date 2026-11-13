@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCart } from "../context/cartContext";
 import { Link, useParams } from "react-router-dom"; 
 //UserParams lee el ID, llega como texto y se convierte en Number(id)
 // si no existe el ID, muestra un mensaje de error
@@ -7,9 +8,11 @@ import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const { addItem } = useCart();
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null)
   const [feedback, setFeedback] = useState(null);
+
 
   const product = PRODUCTS.find((p) => p.id === Number(id));
 
@@ -36,7 +39,8 @@ export default function ProductDetail() {
         setFeedback({ type: "error", text: "selecciona un talle para continuar." });
         return;
     }
-    setFeedback({ type: "ok", text: "Selecciona lista. El carrito se conecta en un proximo paso." });
+    addItem({ product, color: activeColor, size: activeSize });
+    setFeedback({ type: "ok", text: "Agregado al carrito." });
   };
 
   return (
