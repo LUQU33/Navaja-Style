@@ -1,4 +1,5 @@
 const pool = require("../config/db.config");
+const ApiError = require("../utils/ApiError");
 
 async function obtenerPorUsuario(usuarioId) {
   const [carritos] = await pool.execute(
@@ -28,4 +29,68 @@ async function obtenerPorUsuario(usuarioId) {
   return { id: carritos[0].id, items };
 }
 
-module.exports = { obtenerPorUsuario };
+async function agregarItem(usuarioId, varianteId, cantidad) {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+    await connection.execute("SELECT id FROM usuarios WHERE id = ? FOR UPDATE", [usuarioId]);
+
+    const [variantes] = await connection.execute(
+      `SELECT v.stock, p.estado
+       FROM variantes v
+       JOIN productos p ON p.id = v.producto_id
+       WHERE v.id = ? FOR UPDATE`,
+      [varianteId]
+    );
+
+    if (variantes.length === 0 || variantes[0].estado !== "activo") {
+      throw new ApiError(404, "Variante no disponible");
+    }
+
+    const [carritos] = await connection.execute(
+      "SELECT id FROM carritos WHERE usuario_id = ? ORDER BY id LIMIT 1",
+      [usuarioId]
+    );
+    let carritoId = carritos[0]?.id;
+    let cantidadActual = 0;
+
+    if (carritoId) {
+      const [items] = await connection.execute(
+        "SELECT cantidad FROM carrito_items WHERE carrito_id = ? AND variante_id = ?",
+        [carritoId, varianteId]
+      );
+      cantidadActual = items[0]?.cantidad || 0;
+    }
+
+    if (cantidadActual + cantidad > variantes[0].stock) {
+      throw new ApiError(400, "Stock insuficiente");
+    }
+
+    if (!carritoId) {
+      const [resultado] = await connection.execute(
+        "INSERT INTO carritos (usuario_id) VALUES (?)",
+        [usuarioId]
+      );
+      carritoId = resultado.insertId;
+    }
+
+    await connection.execute(
+      `INSERT INTO carrito_items (carrito_id, variante_id, cantidad)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE cantidad = cantidad + ?`,
+      [carritoId, varianteId, cantidad, cantidad]
+    );
+
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+
+  return obtenerPorUsuario(usuarioId);
+}
+
+module.exports = { obtenerPorUsuario, agregarItem };
