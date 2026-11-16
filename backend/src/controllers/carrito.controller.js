@@ -24,4 +24,19 @@ async function agregarItem(req, res, next) {
   }
 }
 
-module.exports = { obtener, agregarItem };
+async function actualizarItem(req, res, next) {
+  try {
+    const carrito = await carritoModel.actualizarItem(
+      req.usuario.id, req.params.id, req.body.cantidad
+    );
+    return res.json({
+      success: true,
+      message: "Cantidad actualizada correctamente",
+      data: carrito,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { obtener, agregarItem, actualizarItem };

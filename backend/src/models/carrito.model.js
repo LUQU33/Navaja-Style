@@ -93,4 +93,53 @@ async function agregarItem(usuarioId, varianteId, cantidad) {
   return obtenerPorUsuario(usuarioId);
 }
 
-module.exports = { obtenerPorUsuario, agregarItem };
+async function actualizarItem(usuarioId, itemId, cantidad) {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+    await connection.execute("SELECT id FROM usuarios WHERE id = ? FOR UPDATE", [usuarioId]);
+
+    const [items] = await connection.execute(
+      `SELECT ci.carrito_id, ci.variante_id
+       FROM carrito_items ci
+       JOIN carritos c ON c.id = ci.carrito_id
+       WHERE ci.id = ? AND c.usuario_id = ? FOR UPDATE`,
+      [itemId, usuarioId]
+    );
+
+    if (items.length === 0) {
+      throw new ApiError(404, "Artículo no encontrado en el carrito");
+    }
+
+    const [variantes] = await connection.execute(
+      `SELECT v.stock, p.estado
+       FROM variantes v
+       JOIN productos p ON p.id = v.producto_id
+       WHERE v.id = ? FOR UPDATE`,
+      [items[0].variante_id]
+    );
+
+    if (variantes.length === 0 || variantes[0].estado !== "activo") {
+      throw new ApiError(404, "Variante no disponible");
+    }
+    if (cantidad > variantes[0].stock) {
+      throw new ApiError(400, "Stock insuficiente");
+    }
+
+    await connection.execute(
+      "UPDATE carrito_items SET cantidad = ? WHERE id = ? AND carrito_id = ?",
+      [cantidad, itemId, items[0].carrito_id]
+    );
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+
+  return obtenerPorUsuario(usuarioId);
+}
+
+module.exports = { obtenerPorUsuario, agregarItem, actualizarItem };
