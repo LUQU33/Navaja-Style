@@ -6,6 +6,7 @@ const colorRoutes = require("./color.routes");
 const varianteRoutes = require("./variante.routes");
 const metodosPagoRoutes = require("./metodoPago.routes");
 const usuarioRoutes = require("./usuario.routes");
+const direccionRoutes = require("./direccion.routes");
 const authRoutes = require("./auth.routes");
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use(colorRoutes);
 router.use(varianteRoutes);
 router.use(metodosPagoRoutes);
 router.use(usuarioRoutes);
+router.use(direccionRoutes);
 
 router.use(authRoutes);
 module.exports = router;

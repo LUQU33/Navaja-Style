@@ -417,3 +417,58 @@ Content-Type: application/json
 Authorization: Bearer {{clienteToken}}
 
 { "telefono": "1234567890123456789012345678901234567890" }
+
+
+################################################################
+### Direcciones - usar un token de cliente válido en clienteToken
+### La prueba de creación correcta guarda una dirección en MySQL.
+################################################################
+
+### Direcciones - listar las propias (200)
+GET {{url}}/usuarios/me/direcciones
+Authorization: Bearer {{clienteToken}}
+
+### Direcciones - listar sin token (401)
+GET {{url}}/usuarios/me/direcciones
+
+### Direcciones - crear correctamente (201)
+POST {{url}}/usuarios/me/direcciones
+Content-Type: application/json
+Authorization: Bearer {{clienteToken}}
+
+{
+  "calle": "  Calle Prueba  ",
+  "numero": "123",
+  "piso_depto": null,
+  "ciudad": "Ciudad Prueba",
+  "provincia": "Provincia Prueba",
+  "codigo_postal": "1000",
+  "referencia": "Dirección de prueba"
+}
+
+### Direcciones - calle vacía (400)
+POST {{url}}/usuarios/me/direcciones
+Content-Type: application/json
+Authorization: Bearer {{clienteToken}}
+
+{
+  "calle": "   ",
+  "numero": "123",
+  "ciudad": "Ciudad Prueba",
+  "provincia": "Provincia Prueba",
+  "codigo_postal": "1000"
+}
+
+### Direcciones - es_principal todavía no se permite al crear (400)
+POST {{url}}/usuarios/me/direcciones
+Content-Type: application/json
+Authorization: Bearer {{clienteToken}}
+
+{
+  "calle": "Calle Prueba",
+  "numero": "123",
+  "ciudad": "Ciudad Prueba",
+  "provincia": "Provincia Prueba",
+  "codigo_postal": "1000",
+  "es_principal": true
+}
