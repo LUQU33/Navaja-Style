@@ -8,6 +8,7 @@
   --ember-bright: #c65a44;
 
   background: var(--bg);
+  color: var(--steel-300);
   font-family: 'Inter', sans-serif;
   padding: 48px 32px 96px;
   min-height: 70vh;
@@ -177,9 +178,21 @@
   clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);
   transition: background 0.25s ease, color 0.25s ease;
 }
-.navaja-detail .add-btn:hover {
+.navaja-detail .add-btn:hover:not(:disabled) {
   background: var(--ember-bright);
   color: var(--steel-100);
+}
+.navaja-detail .add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.navaja-detail .sold-out {
+  margin: 12px 0 0;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ember-bright);
 }
 
 .navaja-detail .feedback {

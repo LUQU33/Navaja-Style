@@ -1,22 +1,22 @@
 import { createContext, useContext, useState } from "react";
-import { priceToNumber } from "../utils/price";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
     const [items, setItems] = useState([])
 
-    const addItem = ({ product, color, size }) => {
-        const key = `${ product.id}-${color ?? ""}-${size ?? ""}`
+    // La variante (color + talle) identifica el producto concreto que se compra
+    const addItem = ({ product, variante }) => {
+        const key = variante.id
         setItems((current) => {
             const existing = current.find((i) => i.key === key)
             if (existing) {
-                return current.map((i) => 
+                return current.map((i) =>
                     i.key === key ? { ...i, quantity: i.quantity + 1} : i
                 );
             }
 
-            return [...current, { key, product, color, size, quantity: 1}]
+            return [...current, { key, product, color: variante.color, size: variante.talle, quantity: 1}]
         });
     }
     const removeItem = (key) => 
@@ -33,7 +33,7 @@ export function CartProvider({ children }) {
 
     const count = items.reduce((sum, i) => sum + i.quantity, 0)
     const total = items.reduce(
-        (sum, i) => sum + priceToNumber(i.product.price) * i.quantity, 0
+        (sum, i) => sum + Number(i.product.precio) * i.quantity, 0
     );
 
     return (
@@ -45,6 +45,8 @@ export function CartProvider({ children }) {
     );
 }
 
+// Provider y hook conviven en este archivo (igual que AuthContext en TP3)
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCart() {
     const ctx = useContext(CartContext)
     if (!ctx) throw new Error("useCart debe usarse dentro de un CartProvider");
