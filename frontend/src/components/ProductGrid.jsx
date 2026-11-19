@@ -1,16 +1,9 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import "./ProductGrid.css";
 
-const MOCK_PRODUCTS = [
-  { id: 1, name: "Camisa Corte Recto", category: "Colección", price: "$48.000", colors: ["#2b2b2b", "#8a8f98"], badge: "Nuevo" },
-  { id: 2, name: "Pantalón Sastrero", category: "Colección", price: "$62.000", colors: ["#2b2b2b", "#4a4e55", "#cdd1d6"] },
-  { id: 3, name: "Cinturón Cuero Crudo", category: "Accesorios", price: "$21.500", colors: ["#5a3d2b"] },
-  { id: 4, name: "Campera Bomber", category: "Colección", price: "$89.000", colors: ["#2b2b2b"], badge: "Últimas unidades" },
-];
-
 export default function ProductGrid({
-  products = MOCK_PRODUCTS,
+  products = [],
   title = "Destacados",
   eyebrow = "Selección de la semana",
 }) {
