@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
-import ProductCard from "../components/ProductCard"
-import { listarCategorias } from "../api/categorias"
-import { listarProductos } from "../api/productos"
-import "./Catalogo.css"
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
+import { listarCategorias } from "../api/categorias";
+import { listarProductos } from "../api/productos";
+import "./Catalogo.css";
 
 export default function Catalogo() {
     const [searchParams, setSearchParams] = useSearchParams();

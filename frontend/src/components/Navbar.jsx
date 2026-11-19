@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useEffect, useState, useRef } from "react";
 import { listarCategorias } from "../api/categorias";
