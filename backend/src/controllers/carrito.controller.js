@@ -39,4 +39,18 @@ async function actualizarItem(req, res, next) {
   }
 }
 
-module.exports = { obtener, agregarItem, actualizarItem };
+async function eliminarItem(req, res, next) {
+  try {
+    const eliminado = await carritoModel.eliminarItem(req.usuario.id, req.params.id);
+    if (!eliminado) {
+      return res.status(404).json({ success: false, message: "Artículo no encontrado en el carrito" });
+    }
+
+    const carrito = await carritoModel.obtenerPorUsuario(req.usuario.id);
+    return res.json({ success: true, message: "Artículo eliminado del carrito", data: carrito });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { obtener, agregarItem, actualizarItem, eliminarItem };

@@ -23,5 +23,12 @@ router.put(
   verificarValidaciones,
   carritoController.actualizarItem
 );
+router.delete(
+  "/carrito/items/:id",
+  verificarAutenticacion,
+  validarId,
+  verificarValidaciones,
+  carritoController.eliminarItem
+);
 
 module.exports = router;

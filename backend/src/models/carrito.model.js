@@ -142,4 +142,15 @@ async function actualizarItem(usuarioId, itemId, cantidad) {
   return obtenerPorUsuario(usuarioId);
 }
 
-module.exports = { obtenerPorUsuario, agregarItem, actualizarItem };
+async function eliminarItem(usuarioId, itemId) {
+  const [resultado] = await pool.execute(
+    `DELETE ci FROM carrito_items ci
+     JOIN carritos c ON c.id = ci.carrito_id
+     WHERE ci.id = ? AND c.usuario_id = ?`,
+    [itemId, usuarioId]
+  );
+
+  return resultado.affectedRows > 0;
+}
+
+module.exports = { obtenerPorUsuario, agregarItem, actualizarItem, eliminarItem };
