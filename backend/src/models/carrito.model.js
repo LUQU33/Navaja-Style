@@ -153,4 +153,25 @@ async function eliminarItem(usuarioId, itemId) {
   return resultado.affectedRows > 0;
 }
 
-module.exports = { obtenerPorUsuario, agregarItem, actualizarItem, eliminarItem };
+async function vaciar(usuarioId) {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+    await connection.execute("SELECT id FROM usuarios WHERE id = ? FOR UPDATE", [usuarioId]);
+    await connection.execute(
+      "DELETE FROM carrito_items WHERE carrito_id IN (SELECT id FROM carritos WHERE usuario_id = ?)",
+      [usuarioId]
+    );
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+
+  return obtenerPorUsuario(usuarioId);
+}
+
+module.exports = { obtenerPorUsuario, agregarItem, actualizarItem, eliminarItem, vaciar };

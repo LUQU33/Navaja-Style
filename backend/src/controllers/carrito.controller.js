@@ -53,4 +53,13 @@ async function eliminarItem(req, res, next) {
   }
 }
 
-module.exports = { obtener, agregarItem, actualizarItem, eliminarItem };
+async function vaciar(req, res, next) {
+  try {
+    const carrito = await carritoModel.vaciar(req.usuario.id);
+    return res.json({ success: true, message: "Carrito vaciado correctamente", data: carrito });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { obtener, agregarItem, actualizarItem, eliminarItem, vaciar };

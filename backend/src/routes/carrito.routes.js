@@ -30,5 +30,6 @@ router.delete(
   verificarValidaciones,
   carritoController.eliminarItem
 );
+router.delete("/carrito", verificarAutenticacion, carritoController.vaciar);
 
 module.exports = router;
