@@ -1,0 +1,110 @@
+import { useState } from "react";
+import { useCart } from "../context/CartContext";
+import { Link, useParams } from "react-router-dom"; 
+//UserParams lee el ID, llega como texto y se convierte en Number(id)
+// si no existe el ID, muestra un mensaje de error
+import { PRODUCTS } from "../data/products";
+import "./ProductDetail.css";
+
+export default function ProductDetail() {
+  const { id } = useParams();
+  const { addItem } = useCart();
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null)
+  const [feedback, setFeedback] = useState(null);
+
+
+  const product = PRODUCTS.find((p) => p.id === Number(id));
+
+  if (!product) {
+    return (
+      <section className="navaja-detail">
+        <div className="not-found">
+          <h1>Producto no encontrado</h1>
+          <p>Puede que ya no este disponible o que el link sea incorrecto.</p>
+          <Link className="back-link" to="/catalogo">Volver al catálogo</Link>
+        </div>
+      </section>
+    );
+  }
+
+  const { name, category, price, description, badge, colors = [], sizes = [] } = product;
+  const activeColor = colors.includes(selectedColor) ? selectedColor : colors[0];
+  //Utilizamos el color elegido y si no esta disponible lo elige por defecto 
+  //Esto evita un Bug
+  const activeSize = sizes.includes(selectedSize) ? selectedSize : null;
+  //Aca no tenemos valor por defecto.
+  const handleAdd = () => {
+    if (sizes.length > 0 && !activeSize) {
+        setFeedback({ type: "error", text: "selecciona un talle para continuar." });
+        return;
+    }
+    addItem({ product, color: activeColor, size: activeSize });
+    setFeedback({ type: "ok", text: "Agregado al carrito." });
+  };
+
+  return (
+    <section className="navaja-detail">
+      <Link className="back-link" to="/catalogo">← Volver al catálogo</Link>
+
+      <div className="layout">
+        <div className="media">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 55 L75 25 C85 20 93 28 88 38 L60 65 L15 55Z" stroke="#8a8f98" strokeWidth="1.4" />
+          </svg>
+        </div>
+
+        <div className="info">
+          {badge && <span className="badge">{badge}</span>}
+          <span className="category">{category}</span>
+          <h1>{name}</h1>
+          <span className="price">{price}</span>
+          <p className="description">{description}</p>
+            {colors.length > 0 && (
+                <div className="option">
+                    <span className="option-label">Color</span>
+                    <div className="swatches">
+                        {colors.map((c) => (
+                            <button
+                                key={c}
+                                type="button"
+                                className={`swatch${c === activeColor ? " active" : ""}`}
+                                style={{ background: c }}
+                                aria-label={`Color ${c}`}
+                                aria-pressed={c === activeColor}
+                                onClick={() => setSelectedColor(c)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {sizes.length > 0 && (
+                <div className="option">
+                    <span className="option-label">Talle</span>
+                    <div className="sizes">
+                        {sizes.map((s) => (
+                            <button
+                                key={s}
+                                type="button"
+                                className={`size${s === activeSize ? " active" : ""}`}
+                                aria-pressed={s === activeSize}
+                                onClick={() => { setSelectedSize(s); setFeedback(null);}}
+                            >
+                                {s}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+            <button type="button" className="add-btn" onClick={handleAdd}>
+                Agregar al carrito
+            </button>
+            {feedback && (
+                <p className={`feedback ${feedback.type}`} role="status">{feedback.text}</p>
+            )}
+        </div>
+      </div>
+    </section>
+  );
+}

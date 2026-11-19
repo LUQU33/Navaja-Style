@@ -1,0 +1,191 @@
+.navaja-detail {
+  --bg: #131313;
+  --bg-panel: #1b1b1a;
+  --steel-100: #f2f2ef;
+  --steel-300: #cdd1d6;
+  --steel-500: #8a8f98;
+  --ember: #a8402f;
+  --ember-bright: #c65a44;
+
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  padding: 48px 32px 96px;
+  min-height: 70vh;
+}
+.navaja-detail * { box-sizing: border-box; }
+
+.navaja-detail .back-link {
+  display: block;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.navaja-detail .back-link:hover { color: var(--steel-100); }
+
+.navaja-detail .layout {
+  max-width: 1100px;
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.navaja-detail .option {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.navaja-detail .option-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--steel-500);
+}
+
+.navaja-detail .swatches { display: flex; gap: 12px; }
+.navaja-detail .swatch {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 242, 239, 0.35);
+  cursor: pointer;
+}
+.navaja-detail .swatch.active {
+  outline: 2px solid var(--ember-bright);
+  outline-offset: 3px;
+}
+
+.navaja-detail .sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.navaja-detail .size {
+  min-width: 46px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--steel-300);
+  background: transparent;
+  border: 1px solid rgba(138, 143, 152, 0.3);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.navaja-detail .size:hover {
+  color: var(--steel-100);
+  border-color: var(--steel-100);
+}
+.navaja-detail .size.active {
+  color: var(--bg);
+  background: var(--steel-100);
+  border-color: var(--steel-100);
+}
+
+.navaja-detail .media {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(155deg, #202020 0%, #131313 100%);
+  border: 1px solid rgba(138, 143, 152, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.navaja-detail .media svg { width: 46%; opacity: 0.5; }
+
+.navaja-detail .info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.navaja-detail .badge {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--steel-100);
+  background: var(--ember);
+  padding: 4px 8px;
+}
+
+.navaja-detail .category {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ember-bright);
+}
+
+.navaja-detail h1 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  color: var(--steel-100);
+  margin: 0;
+}
+
+.navaja-detail .price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  color: var(--steel-300);
+}
+
+.navaja-detail .description {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--steel-300);
+  max-width: 460px;
+  margin: 8px 0 0;
+}
+
+.navaja-detail .not-found {
+  max-width: 480px;
+  margin: 80px auto;
+  text-align: center;
+}
+.navaja-detail .not-found h1 { margin-bottom: 12px; }
+.navaja-detail .not-found p { color: var(--steel-500); margin: 0 0 24px; }
+
+@media (max-width: 860px) {
+  .navaja-detail { padding: 32px 20px 72px; }
+  .navaja-detail .layout { grid-template-columns: 1fr; gap: 28px; }
+}
+
+.navaja-detail .add-btn {
+  align-self: flex-start;
+  margin-top: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--steel-100);
+  border: none;
+  padding: 15px 32px;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.navaja-detail .add-btn:hover {
+  background: var(--ember-bright);
+  color: var(--steel-100);
+}
+
+.navaja-detail .feedback {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  margin: 12px 0 0;
+}
+.navaja-detail .feedback.error { color: #d9503f; }
+.navaja-detail .feedback.ok { color: var(--steel-300); }
