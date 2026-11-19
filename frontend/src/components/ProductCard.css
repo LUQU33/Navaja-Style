@@ -30,6 +30,11 @@
   justify-content: center;
   overflow: hidden;
 }
+.navaja-card a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .navaja-card .media svg {
   width: 46%;
   opacity: 0.5;
@@ -38,19 +43,6 @@
 .navaja-card:hover .media svg {
   opacity: 0.75;
   transform: scale(1.04) rotate(-2deg);
-}
-
-.navaja-card .badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--steel-100);
-  background: var(--ember);
-  padding: 4px 8px;
 }
 
 .navaja-card .quick-add {
@@ -70,6 +62,7 @@
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  z-index: 2;
 }
 .navaja-card:hover .quick-add {
   opacity: 1;
@@ -115,13 +108,9 @@
   color: var(--steel-300);
 }
 
-.navaja-card .swatches {
-  display: flex;
-  gap: 5px;
-}
-.navaja-card .swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 1px solid rgba(242, 242, 239, 0.35);
+/* hace clickeable toda la tarjeta */
+.navaja-card .name a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
