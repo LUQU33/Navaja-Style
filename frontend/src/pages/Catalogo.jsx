@@ -1,51 +1,91 @@
-import { useSearchParams  } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import ProductCard from "../components/ProductCard"
-import { PRODUCTS } from "../data/products"
+import { listarCategorias } from "../api/categorias"
+import { listarProductos } from "../api/productos"
 import "./Catalogo.css"
-
-const CATEGORIES = ["Todos", ...new Set(PRODUCTS.map((p) => p.category))];
 
 export default function Catalogo() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const [categorias, setCategorias] = useState([]);
+    const [errorCategorias, setErrorCategorias] = useState(null);
+    const [resultado, setResultado] = useState(null);
 
-    const param = searchParams.get("categoria");
-    const active = CATEGORIES.includes(param) ? param : "Todos";
+    const categoriaId = Number(searchParams.get("categoria")) || null;
 
-    const selectCategory = (cat) => {
-        if (cat === "Todos") setSearchParams({});
-        else setSearchParams({ categoria: cat });
+    const cargando = resultado?.categoriaId !== categoriaId;
+    const productos = resultado?.productos ?? [];
+    const error = resultado?.error ?? null;
+
+    // Traemos las categorias del backend y las guardamos en el estado
+    useEffect(() => {
+        listarCategorias()
+            .then(setCategorias)
+            .catch((e) => setErrorCategorias(e.message));
+    }, []);
+
+    // Traemos los productos del backend y los guardamos en el estado
+    useEffect(() => {
+        let cancelado = false;
+
+        listarProductos(categoriaId)
+            .then((data) => {
+                if (!cancelado) setResultado({ categoriaId, productos: data, error: null });
+            })
+            .catch((e) => {
+                if (!cancelado) setResultado({ categoriaId, productos: [], error: e.message });
+            });
+
+        return () => {
+            cancelado = true;
+        };
+    }, [categoriaId]);
+
+    // Función para cambiar la categoría seleccionada y actualizar los parámetros de búsqueda
+    const selectCategory = (id) => {
+        if (id === null) setSearchParams({});
+        else setSearchParams({ categoria: id });
     };
 
-    const visible = 
-        active === "Todos"
-            ? PRODUCTS
-            : PRODUCTS.filter((p) => p.category === active);
-    
     return (
         <section className="navaja-catalog">
             <header className="head">
                 <div className="eyebrow">Catálogo</div>
                 <h1>Todos los productos</h1>
-                <span className="count">{visible.length} productos</span>
+                {!cargando && !error && (
+                    <span className="count">{productos.length} productos</span>
+                )}
             </header>
 
             <div className="filters">
-                {CATEGORIES.map((cat) => (
+                <button
+                    className={`chip${categoriaId === null ? " active" : ""}`}
+                    onClick={() => selectCategory(null)}
+                >
+                    Todos
+                </button>
+                {categorias.map((cat) => (
                     <button
-                        key={cat}
-                        className={`chip${active === cat ? " active" : ""}`}
-                        onClick={() => selectCategory(cat)}
+                        key={cat.id}
+                        className={`chip${categoriaId === cat.id ? " active" : ""}`}
+                        onClick={() => selectCategory(cat.id)}
                     >
-                        {cat}
+                        {cat.nombre}
                     </button>
                 ))}
             </div>
+            {errorCategorias && <p>{errorCategorias}</p>}
 
-            <div className="grid">
-                {visible.map((p) => (
-                    <ProductCard key={p.id} product={p} />
-                ))}
-            </div>
+            {cargando && <p>Cargando productos...</p>}
+            {!cargando && error && <p>{error}</p>}
+
+            {!cargando && !error && (
+                <div className="grid">
+                    {productos.map((p) => (
+                        <ProductCard key={p.id} product={p} />
+                    ))}
+                </div>
+            )}
         </section>
     );
 }

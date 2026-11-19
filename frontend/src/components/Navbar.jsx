@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom"
 import { useEffect, useState, useRef } from "react";
+import { listarCategorias } from "../api/categorias";
 import "./Navbar.css";
 
-const DEFAULT_LINKS = ["Colección", "Accesorios", "Cuidado"];
-
 export default function Navbar({
-  links = DEFAULT_LINKS,
   cartCount = 0,
   onSearch = () => {},
 }) {
@@ -13,12 +11,18 @@ export default function Navbar({
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [categorias, setCategorias] = useState([]);
   const inputRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    // Si falla, el menú queda sin categorías; el resto de la barra sigue funcionando
+    listarCategorias().then(setCategorias).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -50,15 +54,15 @@ export default function Navbar({
         </Link>
 
         <nav className={`links${menuOpen ? " open" : ""}`}>
-          {links.map((link) => (
+          {categorias.map((cat) => (
             <Link 
-              key={link} 
+              key={cat.id} 
               className="nav-link" 
-              to={`/catalogo?categoria=${encodeURIComponent(link)}`}
+              to={`/catalogo?categoria=${cat.id}`}
               onClick={() => setMenuOpen(false)}
               //El onClick cierra el menu hamburguesa despues de tocar una opcion
             >
-              {link}
+              {cat.nombre}
             </Link>
           ))}
         </nav>
